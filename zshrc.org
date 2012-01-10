@@ -1,0 +1,1065 @@
+* Introduction
+
+  This is a literate programming zsh configuration written in
+  org-mode/org-babel.
+
+** History
+   Up until January 2012 I used [[https://github.com/robbyrussell/oh-my-zsh][oh-my-zsh]] to configure my shell
+   environment. It contains a lot of good ideas and a plethora of tools
+   but, it also contains many errors and small mistakes; the code-quality
+   overall is lousy.
+
+   After discovering the [[https://github.com/eschulte/emacs24-starter-kit][emacs starter kit]] I thought a lot about a good
+   project to start to learn about and use [[http://orgmode.org/worg/org-contrib/babel/][org-babel]] for a literate
+   programming adventure.
+
+   I'm usualy slow to take action, considering a lot, thinking ahead as
+   many paths as I can -- think of. Since, as of january 3d, oh-my-zsh
+   get's on my nerves for a couple of weeks now instead of making my
+   day, taking on my first LP project wasn't such a long process after all.
+
+   The first version considered complete enough to replace oh-my-zsh,
+   finaly ridden of the command substitution bug, was finished
+   <2012-01-10 Tue 13:21>.
+* Variables
+** Emacs setup
+#+begin_src sh :tangle yes
+  if [ -z "${EMACS_BASE}" ]; then
+      EMACS_BASE="/usr/local"
+      export EMACS_BASE
+  fi
+#+end_src sh
+
+** Completion
+   #+begin_src sh :tangle yes 
+     CASE_SENSITIVE='true'
+     COMPLETION_WAITING_DOTS=false
+   #+end_src sh
+
+** Coloring for standard commands
+#+begin_src sh :tangle yes 
+  export GREP_COLOR='1;32'
+#+end_src sh
+
+** Pager
+#+begin_src sh :tangle yes 
+  export PAGER='less'
+#+end_src sh
+
+** Collation
+#+begin_src sh :tangle yes 
+  export LC_CTPY=$LANG
+#+end_src sh
+
+** Path/Fpath
+#+begin_src sh :tangle yes 
+  path=( ~/bin $path )
+  fpath=( ~/.zsh.d/functions $fpath )
+#+end_src sh
+
+** Bashlibs
+#+begin_src sh :tangle yes 
+  export BASH_LIBS_DIR=~/lib/bash
+#+end_src sh
+
+** Editor
+#+begin_src sh :tangle yes 
+  export EDITOR="${EMACS_BASE}/bin/emacsclient -nw -c"
+#+end_src sh
+
+* Modules
+** =colors=
+#+begin_src sh :tangle yes 
+  autoload colors; colors
+#+end_src sh
+
+* Aliases
+** Coloring for standard commands
+A few standard aliases to deal with colored output in terminals.
+#+begin_src sh :tangle yes 
+  alias ls='ls --color=auto'
+  alias grep='grep --color=auto'
+  alias less='less -R'
+#+end_src
+** Emacs
+My emacs installation is sometimes in special locations; the aliases
+defined here reflect that.
+
+#+begin_src sh  :tangle yes
+  alias emacs="${EMACS_BASE}/bin/emacs"
+  alias emc="${EMACS_BASE}/bin/emacsclient -c -nw"  
+#+end_src sh
+** Desktop
+I use awesome and don't want =nautilus= to take over my desktop. 
+Defining this alias prevents the =nautilus= started by
+=gnome-session= to automaticaly take over.
+
+#+begin_src sh :tangle yes
+  alias nautilus='nautilus --no-desktop'  
+#+end_src sh
+
+* Functions
+** Archives
+*** Extract
+#+begin_src sh  :tangle yes
+  function extract() {
+      unset REMOVE_ARCHIVE
+      
+      if test "$1" = "-r"; then
+          REMOVE_ARCHIVE=1
+          shift
+      fi
+      if [[ -f $1 ]]; then
+          case $1 in
+              *.tar.bz2) tar xvjf $1;;
+              *.tar.gz) tar xvzf $1;;
+              *.tar.xz) tar xvJf $1;;
+              *.tar.lzma) tar --lzma -xvf $1;;
+              *.bz2) bunzip $1;;
+              *.rar) unrar x $1;;
+              *.gz) gunzip $1;;
+              *.tar) tar xvf $1;;
+              *.tbz2) tar xvjf $1;;
+              *.tgz) tar xvzf $1;;
+              *.zip) unzip $1;;
+              *.Z) uncompress $1;;
+              *.7z) 7z x $1;;
+              *) echo "'$1' cannot be extracted via >extract<";;
+          esac
+  
+          if [[ $REMOVE_ARCHIVE -eq 1 ]]; then
+              echo removing "$1";
+              /bin/rm "$1";
+          fi
+  
+      else
+          echo "'$1' is not a valid file"
+      fi
+  }  
+#+end_src sh
+
+** Source bash scripts
+#+begin_src sh :tangle yes 
+  bash_source() {
+      alias shopt=':'
+      alias _expand=_bash_expand
+      alias _complete=_bash_comp
+      emulate -L sh
+      setopt kshglob noshglob braceexpand
+      
+      source "$@"
+  }
+#+end_src sh
+
+* Options
+#+begin_src sh :tangle yes
+  setopt extended_glob \
+      glob_complete \
+      function_arg_zero \
+      hash_cmds \
+      hash_dirs \
+      multios \
+      re_match_pcre
+#+end_src sh
+
+* Keybindings
+** Emacs style keybindings!
+#+begin_src sh :tangle yes 
+  bindkey -e
+#+end_src sh
+* Command completion
+** =compinit=
+#+begin_src sh :tangle yes 
+  autoload -Uz compinit; compinit
+#+end_src sh
+
+** Options
+   #+begin_src sh :tangle yes
+     unsetopt menu_complete \
+         flowcontrol
+     
+     setopt auto_menu \
+         complete_in_word \
+         always_to_end
+   #+end_src
+** =complist= module
+   #+begin_src sh  :tangle yes
+     zmodload -i zsh/complist
+   #+end_src sh
+
+** .zshrc
+#+begin_src sh  :tangle yes
+  zstyle :compinstall filename "$HOME/.zshrc"
+#+end_src sh
+
+** Bashcompletion
+#+begin_src sh  :tangle yes
+  autoload -Uz bashcompinit; bashcompinit
+#+end_src sh
+
+** Case insensitive, partial word and substring completion
+   #+begin_src sh   :tangle yes 
+     if [ "x$CASE_SENSITIVE" = "xtrue" ]; then
+         zstyle ':completion:*' matcher-list 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+         unset CASE_SENSITIVE
+     else
+         zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+     fi
+   #+end_src
+** Colors/Menu
+   #+begin_src sh :tangle yes 
+     zstyle ':completion:*' list-colors ''     
+     zstyle ':completion:*:*:*:*:*' menu select
+   #+end_src sh
+** Keybindings   
+   #+begin_src sh :tangle yes 
+     bindkey -M menuselect '^o' accept-and-infer-next-history  
+   #+end_src sh
+** Process completion
+   Menu of own processes for kill.
+   #+begin_src sh :tangle yes 
+     zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+     zstyle ':completion:*:*:*:*:processes' command "ps -u $(whoami) -o pid,user,comm -w -w"     
+   #+end_src sh
+** Hostnames
+   #+begin_src sh :tangle yes 
+     [ -r /etc/ssh/ssh_known_hosts ] && _global_ssh_hosts=(${${${${(f)"$(</etc/ssh/ssh_known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _ssh_hosts=()
+     [ -r ~/.ssh/known_hosts ] && _ssh_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _ssh_hosts=()
+     [ -r /etc/hosts ] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}} || _etc_hosts=()       
+     
+     hosts=(
+         "$_global_ssh_hosts[@]"
+         "$_ssh_hosts[@]"
+         "$_etc_hosts[@]"
+         `hostname`
+         localhost
+     )
+     zstyle ':completion:*:hosts' hosts $hosts
+   #+end_src sh
+** Usernames
+   Ignore most system users
+   #+begin_src sh :tangle yes 
+     zstyle ':completion:*:*:*:users' ignored-patterns \
+         adm amanda apache avahi beaglidx bin cacti canna clamav daemon \
+         dbus distcache dovecot fax ftp games gdm gkrellmd gopher \
+         hacluster haldaemon halt hsqldb ident junkbust ldap lp mail \
+         mailman mailnull mldonkey mysql nagios \
+         named netdump news nfsnobody nobody nscd ntp nut nx openvpn \
+         operator pcap postfix postgres privoxy pulse pvm quagga radvd \
+         rpc rpcuser rpm shutdown squid sshd sync uucp vcsa xfs
+     
+     # ... unless we really want to.
+     zstyle '*' single-ignored show          
+   #+end_src sh
+** Caching
+   Some completions need caching (dpkg, ...)
+   #+begin_src sh :tangle yes 
+     zstyle ':completion::complete:*' use-cache 1
+     zstyle ':completion::complete:*' cache-path ~/.zsh.d/cache/     
+   #+end_src sh
+   
+** Completion with dots
+   #+begin_src sh :tangle yes
+     if [ "x$COMPLETION_WAITING_DOTS" = "xtrue" ]; then
+         expand-or-complete-with-dots() {
+             echo -n "\e[31m......\e[0m"
+             zle expand-or-complete
+             zle redisplay
+         }
+         zle -N expand-or-complete-with-dots
+         bindkey "^I" expand-or-complete-with-dots
+     fi
+   #+end_src
+   
+** Devserver
+#+begin_src sh  :tangle yes
+  if [[ -r "/usr/share/bash-completion/devserver" ]]; then
+      bash_source /usr/share/bash-completion/devserver
+  fi  
+#+end_src sh
+
+* Commandline editing
+** Jump to beginning/end of line/word
+#+begin_src sh :tangle yes
+  bindkey "^[[H" beginning-of-line
+  bindkey "^[[1~" beginning-of-line
+  bindkey "^[OH" beginning-of-line
+  bindkey "^[[F"  end-of-line
+  bindkey "^[[4~" end-of-line
+  bindkey "^[OF" end-of-line
+  bindkey "^[[1;5C" forward-word
+  bindkey "^[[1;5D" backward-word
+#+end_src sh
+
+** Deletion
+#+begin_src sh :tangle yes
+  bindkey '^?' backward-delete-char
+  bindkey "^[[3~" delete-char
+  bindkey "^[3;5~" delete-char
+  bindkey "\e[3~" delete-char
+#+end_src 
+** Insert the last shell word again
+#+begin_src sh :tangle yes
+  bindkey "^[m" copy-prev-shell-word
+#+end_src sh
+
+** URLs
+#+begin_src sh :tangle yes
+  autoload -U url-quote-magic
+  zle -N self-insert url-quote-magic
+#+end_src
+
+** Options
+#+begin_src sh  :tangle yes
+  setopt no_beep \
+      rm_star_wait
+#+end_src sh
+
+** Syntax highlighting
+#+begin_src sh :tangle yes
+  [[ -f ~/.zsh.d/addons/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
+      source ~/.zsh.d/addons/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#+end_src sh 
+
+** sudo
+#+begin_src sh :tangle yes
+  run-with-sudo () { LBUFFER="sudo $LBUFFER" }
+  zle -N run-with-sudo
+  bindkey '^Xs' run-with-sudo  
+#+end_src sh 
+
+** Empty ^I lists directory
+#+begin_src sh  :tangle yes
+  complete-or-list() {
+      [[ $#BUFFER != 0 ]] && { zle complete-word ; return 0 }
+      echo
+      ls
+      zle reset-prompt
+  }
+  zle -N complete-or-list
+  bindkey '^I' complete-or-list
+#+end_src sh
+** Pipe to
+#+begin_src sh :tangle yes
+  typeset -Ag abbreviations
+  abbreviations=(
+      "Il"    "| less"
+      "Ia"    "| awk"
+      "Ig"    "| grep"
+      "Ieg"   "| egrep"
+      "Iag"   "| agrep"
+      "Ih"    "| head"
+      "Ik"    "| keep"
+      "It"    "| tail"
+      "Is"    "| sort"
+      "Iv"    "| ${VISUAL:-${EDITOR}}"
+      "Iw"    "| wc"
+      "Ix"    "| xargs"
+  )
+  
+  magic-abbrev-expand() {
+      local MATCH
+      LBUFFER=${LBUFFER%%(#m)[_a-zA-Z0-9]#}
+      LBUFFER+=${abbreviations[$MATCH]:-$MATCH}
+      zle self-insert
+  }
+          
+  no-magic-abbrev-expand() {
+      LBUFFER+=' '
+  }
+          
+  zle -N magic-abbrev-expand
+  zle -N no-magic-abbrev-expand
+  bindkey " " magic-abbrev-expand
+  bindkey "^x " no-magic-abbrev-expand
+  bindkey -M isearch " " self-insert
+#+end_src sh 
+
+* History
+** Variables
+   #+begin_src sh :tangle yes
+     HISTFILE=~/.histfile
+     HISTSIZE=10000
+     SAVEHIST=10000
+   #+end_src sh 
+** Options
+#+begin_src sh  :tangle yes 
+  setopt append_history
+  setopt extended_history
+  setopt hist_expire_dups_first
+  setopt hist_ignore_dups
+  setopt hist_ignore_space
+  setopt hist_verify
+  setopt inc_append_history
+  setopt share_history
+  setopt hist_fcntl_lock 
+  setopt hist_ignore_all_dups
+#+end_src sh
+
+** Aliases
+   =lh= is short for =load history=, =fc= is a =zsh=-builtin to access
+   the history. =-R= rereads the history - in this case from the
+   standard history file. =-I= only appends new entries from this file
+   to the current active history of the shell process.
+
+   #+begin_src sh :tangle yes 
+	 alias lh='fc -RI'  
+   #+end_src sh
+** Functions
+   #+begin_src sh :tangle yes 
+  function zsh_stats() {
+    history | awk '{print $2}' | sort | uniq -c | sort -rn | head
+  }  
+   #+end_src sh
+
+** Keybindings
+   #+begin_src sh :tangle yes 
+  bindkey '^r' history-incremental-search-backward
+  bindkey "^[[5~" up-line-or-history
+  bindkey "^[[6~" down-line-or-history
+  bindkey '^[[A' up-line-or-search
+  bindkey '^[[B' down-line-or-search
+   #+end_src sh
+
+** Substring search
+*** Variables
+   	#+begin_src sh :tangle yes 
+  HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=magenta,fg=white,bold'
+  HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=red,fg=white,bold'
+  HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS='i'
+   	#+end_src sh
+*** Widgets
+	#+begin_src sh :tangle yes 
+  function history-substring-search-up() {
+      _history-substring-search-begin
+  
+      _history-substring-search-up-history ||
+      _history-substring-search-up-buffer ||
+      _history-substring-search-up-search
+  
+      _history-substring-search-end
+  }
+  
+  function history-substring-search-down() {
+      _history-substring-search-begin
+  
+      _history-substring-search-down-history ||
+      _history-substring-search-down-buffer ||
+      _history-substring-search-down-search
+  
+      _history-substring-search-end
+  }
+  
+  zle -N history-substring-search-up
+  zle -N history-substring-search-down  
+	#+end_src sh
+*** Functions
+	#+begin_src sh :tangle yes 
+  function _history-substring-search-begin() {
+    _history_substring_search_move_cursor_eol=false
+    _history_substring_search_query_highlight=
+  
+    #
+    # Continue using the previous $_history_substring_search_result by default,
+    # unless the current query was cleared or a new/different query was entered.
+    #
+    if [[ -z $BUFFER || $BUFFER != $_history_substring_search_result ]]; then
+      #
+      # For the purpose of highlighting we will also keep
+      # a version without doubly-escaped meta characters.
+      #
+      _history_substring_search_query=$BUFFER
+  
+      #
+      # $BUFFER contains the text that is in the command-line currently.
+      # we put an extra "\\" before meta characters such as "\(" and "\)",
+      # so that they become "\\\(" and "\\\)".
+      #
+      _history_substring_search_query_escaped=${BUFFER//(#m)[\][()|\\*?#<>~^]/\\$MATCH}
+  
+      #
+      # Find all occurrences of the search query in the history file.
+      #
+      # (k) turns it an array of line numbers.
+      #
+      # (on) seems to remove duplicates, which are default
+      #      options. They can be turned off by (ON).
+      #
+      _history_substring_search_matches=(${(kon)history[(R)(#$HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS)*${_history_substring_search_query_escaped}*]})
+  
+      #
+      # Define the range of values that $_history_substring_search_match_index
+      # can take: [0, $_history_substring_search_matches_count_plus].
+      #
+      _history_substring_search_matches_count=$#_history_substring_search_matches
+      _history_substring_search_matches_count_plus=$(( _history_substring_search_matches_count + 1 ))
+      _history_substring_search_matches_count_sans=$(( _history_substring_search_matches_count - 1 ))
+  
+      #
+      # If $_history_substring_search_match_index is equal to
+      # $_history_substring_search_matches_count_plus, this indicates that we
+      # are beyond the beginning of $_history_substring_search_matches.
+      #
+      # If $_history_substring_search_match_index is equal to 0, this indicates
+      # that we are beyond the end of $_history_substring_search_matches.
+      #
+      # If we have initially pressed "up" we have to initialize
+      # $_history_substring_search_match_index to
+      # $_history_substring_search_matches_count_plus so that it will be
+      # decreased to $_history_substring_search_matches_count.
+      #
+      # If we have initially pressed "down" we have to initialize
+      # $_history_substring_search_match_index to
+      # $_history_substring_search_matches_count so that it will be increased to
+      # $_history_substring_search_matches_count_plus.
+      #
+      if [[ $WIDGET == history-substring-search-down ]]; then
+         _history_substring_search_match_index=$_history_substring_search_matches_count
+      else
+        _history_substring_search_match_index=$_history_substring_search_matches_count_plus
+      fi
+    fi
+  }
+  
+  function _history-substring-search-end() {
+    _history_substring_search_result=$BUFFER
+  
+    # move the cursor to the end of the command line
+    if [[ $_history_substring_search_move_cursor_eol == true ]]; then
+      CURSOR=${#BUFFER}
+    fi
+  
+    # highlight command line using zsh-syntax-highlighting
+    _zsh_highlight
+  
+    # highlight the search query inside the command line
+    if [[ -n $_history_substring_search_query_highlight && -n $_history_substring_search_query ]]; then
+      #
+      # The following expression yields a variable $MBEGIN, which
+      # indicates the begin position + 1 of the first occurrence
+      # of _history_substring_search_query_escaped in $BUFFER.
+      #
+      : ${(S)BUFFER##(#m$HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS)($_history_substring_search_query##)}
+      local begin=$(( MBEGIN - 1 ))
+      local end=$(( begin + $#_history_substring_search_query ))
+      region_highlight+=("$begin $end $_history_substring_search_query_highlight")
+    fi
+  
+    # For debugging purposes:
+    # zle -R "mn: "$_history_substring_search_match_index" m#: "${#_history_substring_search_matches}
+    # read -k -t 200 && zle -U $REPLY
+  
+    # Exit successfully from the history-substring-search-* widgets.
+    true
+  }
+  
+  function _history-substring-search-up-buffer() {
+    #
+    # Check if the UP arrow was pressed to move the cursor within a multi-line
+    # buffer. This amounts to three tests:
+    #
+    # 1. $#buflines -gt 1.
+    #
+    # 2. $CURSOR -ne $#BUFFER.
+    #
+    # 3. Check if we are on the first line of the current multi-line buffer.
+    #    If so, pressing UP would amount to leaving the multi-line buffer.
+    #
+    #    We check this by adding an extra "x" to $LBUFFER, which makes
+    #    sure that xlbuflines is always equal to the number of lines
+    #    until $CURSOR (including the line with the cursor on it).
+    #
+    local buflines XLBUFFER xlbuflines
+    buflines=(${(f)BUFFER})
+    XLBUFFER=$LBUFFER"x"
+    xlbuflines=(${(f)XLBUFFER})
+  
+    if [[ $#buflines -gt 1 && $CURSOR -ne $#BUFFER && $#xlbuflines -ne 1 ]]; then
+      zle up-line-or-history
+      return true
+    fi
+  
+    false
+  }
+  
+  function _history-substring-search-down-buffer() {
+    #
+    # Check if the DOWN arrow was pressed to move the cursor within a multi-line
+    # buffer. This amounts to three tests:
+    #
+    # 1. $#buflines -gt 1.
+    #
+    # 2. $CURSOR -ne $#BUFFER.
+    #
+    # 3. Check if we are on the last line of the current multi-line buffer.
+    #    If so, pressing DOWN would amount to leaving the multi-line buffer.
+    #
+    #    We check this by adding an extra "x" to $RBUFFER, which makes
+    #    sure that xrbuflines is always equal to the number of lines
+    #    from $CURSOR (including the line with the cursor on it).
+    #
+    local buflines XRBUFFER xrbuflines
+    buflines=(${(f)BUFFER})
+    XRBUFFER="x"$RBUFFER
+    xrbuflines=(${(f)XRBUFFER})
+  
+    if [[ $#buflines -gt 1 && $CURSOR -ne $#BUFFER && $#xrbuflines -ne 1 ]]; then
+      zle down-line-or-history
+      return true
+    fi
+  
+    false
+  }
+  
+  function _history-substring-search-up-history() {
+    #
+    # Behave like up in ZSH, except clear the $BUFFER
+    # when beginning of history is reached like in Fish.
+    #
+    if [[ -z $_history_substring_search_query ]]; then
+  
+      # we have reached the absolute top of history
+      if [[ $HISTNO -eq 1 ]]; then
+        BUFFER=
+  
+      # going up from somewhere below the top of history
+      else
+        zle up-history
+      fi
+  
+      return true
+    fi
+  
+    false
+  }
+  
+  function _history-substring-search-down-history() {
+    #
+    # Behave like down-history in ZSH, except clear the
+    # $BUFFER when end of history is reached like in Fish.
+    #
+    if [[ -z $_history_substring_search_query ]]; then
+  
+      # going down from the absolute top of history
+      if [[ $HISTNO -eq 1 && -z $BUFFER ]]; then
+        BUFFER=${history[1]}
+        _history_substring_search_move_cursor_eol=true
+  
+      # going down from somewhere above the bottom of history
+      else
+        zle down-history
+      fi
+  
+      return true
+    fi
+  
+    false
+  }
+  
+  function _history-substring-search-up-search() {
+    _history_substring_search_move_cursor_eol=true
+  
+    #
+    # Highlight matches during history-substring-up-search:
+    #
+    # The following constants have been initialized in
+    # _history-substring-search-up/down-search():
+    #
+    # $_history_substring_search_matches is the current list of matches
+    # $_history_substring_search_matches_count is the current number of matches
+    # $_history_substring_search_matches_count_plus is the current number of matches + 1
+    # $_history_substring_search_matches_count_sans is the current number of matches - 1
+    # $_history_substring_search_match_index is the index of the current match
+    #
+    # The range of values that $_history_substring_search_match_index can take
+    # is: [0, $_history_substring_search_matches_count_plus].  A value of 0
+    # indicates that we are beyond the end of
+    # $_history_substring_search_matches. A value of
+    # $_history_substring_search_matches_count_plus indicates that we are beyond
+    # the beginning of $_history_substring_search_matches.
+    #
+    # In _history-substring-search-up-search() the initial value of
+    # $_history_substring_search_match_index is
+    # $_history_substring_search_matches_count_plus.  This value is set in
+    # _history-substring-search-begin().  _history-substring-search-up-search()
+    # will initially decrease it to $_history_substring_search_matches_count.
+    #
+    if [[ $_history_substring_search_match_index -ge 2 ]]; then
+      #
+      # Highlight the next match:
+      #
+      # 1. Decrease the value of $_history_substring_search_match_index.
+      #
+      # 2. Use $HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND
+      #    to highlight the current buffer.
+      #
+      (( _history_substring_search_match_index-- ))
+      BUFFER=$history[$_history_substring_search_matches[$_history_substring_search_match_index]]
+      _history_substring_search_query_highlight=$HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND
+  
+    elif [[ $_history_substring_search_match_index -eq 1 ]]; then
+      #
+      # We will move beyond the end of $_history_substring_search_matches:
+      #
+      # 1. Decrease the value of $_history_substring_search_match_index.
+      #
+      # 2. Save the current buffer in $_history_substring_search_old_buffer,
+      #    so that it can be retrieved by
+      #    _history-substring-search-down-search() later.
+      #
+      # 3. Make $BUFFER equal to $_history_substring_search_query.
+      #
+      # 4. Use $HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND
+      #    to highlight the current buffer.
+      #
+      (( _history_substring_search_match_index-- ))
+      _history_substring_search_old_buffer=$BUFFER
+      BUFFER=$_history_substring_search_query
+      _history_substring_search_query_highlight=$HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND
+  
+    elif [[ $_history_substring_search_match_index -eq $_history_substring_search_matches_count_plus ]]; then
+      #
+      # We were beyond the beginning of $_history_substring_search_matches but
+      # UP makes us move back to $_history_substring_search_matches:
+      #
+      # 1. Decrease the value of $_history_substring_search_match_index.
+      #
+      # 2. Restore $BUFFER from $_history_substring_search_old_buffer.
+      #
+      # 3. Use $HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND
+      #    to highlight the current buffer.
+      #
+      (( _history_substring_search_match_index-- ))
+      BUFFER=$_history_substring_search_old_buffer
+      _history_substring_search_query_highlight=$HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND
+    fi
+  }
+  
+  function _history-substring-search-down-search() {
+    _history_substring_search_move_cursor_eol=true
+  
+    #
+    # Highlight matches during history-substring-up-search:
+    #
+    # The following constants have been initialized in
+    # _history-substring-search-up/down-search():
+    #
+    # $_history_substring_search_matches is the current list of matches
+    # $_history_substring_search_matches_count is the current number of matches
+    # $_history_substring_search_matches_count_plus is the current number of matches + 1
+    # $_history_substring_search_matches_count_sans is the current number of matches - 1
+    # $_history_substring_search_match_index is the index of the current match
+    #
+    # The range of values that $_history_substring_search_match_index can take
+    # is: [0, $_history_substring_search_matches_count_plus].  A value of 0
+    # indicates that we are beyond the end of
+    # $_history_substring_search_matches. A value of
+    # $_history_substring_search_matches_count_plus indicates that we are beyond
+    # the beginning of $_history_substring_search_matches.
+    #
+    # In _history-substring-search-down-search() the initial value of
+    # $_history_substring_search_match_index is
+    # $_history_substring_search_matches_count.  This value is set in
+    # _history-substring-search-begin().
+    # _history-substring-search-down-search() will initially increase it to
+    # $_history_substring_search_matches_count_plus.
+    #
+    if [[ $_history_substring_search_match_index -le $_history_substring_search_matches_count_sans ]]; then
+      #
+      # Highlight the next match:
+      #
+      # 1. Increase $_history_substring_search_match_index by 1.
+      #
+      # 2. Use $HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND
+      #    to highlight the current buffer.
+      #
+      (( _history_substring_search_match_index++ ))
+      BUFFER=$history[$_history_substring_search_matches[$_history_substring_search_match_index]]
+      _history_substring_search_query_highlight=$HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND
+  
+    elif [[ $_history_substring_search_match_index -eq $_history_substring_search_matches_count ]]; then
+      #
+      # We will move beyond the beginning of $_history_substring_search_matches:
+      #
+      # 1. Increase $_history_substring_search_match_index by 1.
+      #
+      # 2. Save the current buffer in $_history_substring_search_old_buffer, so
+      #    that it can be retrieved by _history-substring-search-up-search()
+      #    later.
+      #
+      # 3. Make $BUFFER equal to $_history_substring_search_query.
+      #
+      # 4. Use $HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND
+      #    to highlight the current buffer.
+      #
+      (( _history_substring_search_match_index++ ))
+      _history_substring_search_old_buffer=$BUFFER
+      BUFFER=$_history_substring_search_query
+      _history_substring_search_query_highlight=$HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND
+  
+    elif [[ $_history_substring_search_match_index -eq 0 ]]; then
+      #
+      # We were beyond the end of $_history_substring_search_matches but DOWN
+      # makes us move back to the $_history_substring_search_matches:
+      #
+      # 1. Increase $_history_substring_search_match_index by 1.
+      #
+      # 2. Restore $BUFFER from $_history_substring_search_old_buffer.
+      #
+      # 3. Use $HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND
+      #    to highlight the current buffer.
+      #
+      (( _history_substring_search_match_index++ ))
+      BUFFER=$_history_substring_search_old_buffer
+      _history_substring_search_query_highlight=$HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND
+    fi
+  }  
+	#+end_src sh
+
+*** Activation
+	#+begin_src sh :tangle yes
+  if test "$CASE_SENSITIVE" = true; then
+      unset HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS
+  fi
+  
+  if test "$DISABLE_COLOR" = true; then
+      unset HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND
+      unset HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND
+  fi
+	#+end_src sh
+
+*** Keybindings
+	#+begin_src sh :tangle yes 
+  bindkey '\e[A' history-substring-search-up
+  bindkey '\e[B' history-substring-search-down
+	#+end_src sh 
+
+* Jobcontrol
+** Options
+#+begin_src sh :tangle yes 
+  setopt long_list_jobs
+#+end_src sh
+
+* Autocorrection
+I use autocorrection, but define a couple of aliases for commands for
+which I don't want correction.
+** Options
+#+begin_src sh :tangle yes
+  setopt correct \
+      correct_all 
+  
+#+end_src sh
+** Aliases
+#+begin_src sh :tangle yes
+  alias man='nocorrect man'
+  alias mv='nocorrect mv'
+  alias mkdir='nocorrect mkdir'
+  alias gist='nocorrect gist'
+  alias ebuild='nocorrect ebuild'
+#+end_src
+
+* Directory traversal and manipulation
+** Options
+#+begin_src sh  :tangle yes
+  setopt auto_name_dirs
+  setopt auto_pushd
+  setopt auto_cd
+  setopt pushd_ignore_dups
+  setopt pushd_silent
+#+end_src sh
+** Aliases
+#+begin_src sh :tangle yes 
+  alias ..='cd ..'
+  alias cd..='cd ..'
+  alias cd...='cd ../..'
+  alias cd....='cd ../../..'
+  alias cd.....='cd ../../../..'
+  alias cd/='cd /'
+  
+  alias md='mkdir -p'
+  alias rd=rmdir
+  alias d='dirs -v'  
+#+end_src 
+** Functions
+#+begin_src sh :tangle yes 
+  cd () {
+    if   [[ "x$*" == "x..." ]]; then
+      cd ../..
+    elif [[ "x$*" == "x...." ]]; then
+      cd ../../..
+    elif [[ "x$*" == "x....." ]]; then
+      cd ../../..
+    elif [[ "x$*" == "x......" ]]; then
+      cd ../../../..
+    else
+      builtin cd "$@"
+    fi
+  }
+  function mcd() { 
+    mkdir -p "$1" && cd "$1"; 
+  }    
+#+end_src sh
+
+* Hooks
+#+begin_src sh :tangle yes 
+  autoload -U add-zsh-hook 
+#+end_src sh
+
+* Terminal
+** Colors
+#+begin_src sh :tangle yes 
+  eval $(dircolors)
+#+end_src sh
+
+** Title
+#+begin_src sh :tangle yes
+  function title {
+    [ "$DISABLE_AUTO_TITLE" != "true" ] || return
+    if [[ "$TERM" == screen* ]]; then
+      print -Pn "\ek$1:q\e\\" #set screen hardstatus, usually truncated at 20 chars
+    elif [[ "$TERM" == xterm* ]] || [[ $TERM == rxvt* ]] || [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
+     print -Pn "\e]2;$2:q\a" #set window name
+     print -Pn "\e]1;$1:q\a" #set icon (=tab) name (will override window name on broken terminal)
+    fi
+  }
+  
+  ZSH_THEME_TERM_TAB_TITLE_IDLE="%15<..<%~%<<" #15 char left truncated PWD
+  ZSH_THEME_TERM_TITLE_IDLE="%n@%m: %~"
+  
+  #Appears when you have the prompt
+  function omz_termsupport_precmd {
+    title $ZSH_THEME_TERM_TAB_TITLE_IDLE $ZSH_THEME_TERM_TITLE_IDLE
+  }
+  
+  #Appears at the beginning of (and during) of command execution
+  function omz_termsupport_preexec {
+    emulate -L zsh
+    setopt no_extended_glob
+    local CMD=${1[(wr)^(*=*|sudo|ssh|-*)]} #cmd name only, or if this is sudo or ssh, the next cmd
+    title "$CMD" "%100>...>${2//\$\(/\\\$(}%<<"
+  }
+  
+  add-zsh-hook precmd  omz_termsupport_precmd
+  add-zsh-hook preexec omz_termsupport_preexec
+  
+#+end_src sh
+
+* Prompt
+#+begin_src sh :tangle yes 
+  setopt prompt_subst
+#+end_src sh :tangle yes
+
+Sorin oh-my-zsh theme
+#+begin_src sh :tangle yes 
+  if [[ "$TERM" != "dumb" ]] && [[ "$DISABLE_LS_COLORS" != "true" ]]; then
+      MODE_INDICATOR="%{$fg_bold[red]%}❮%{$reset_color%}%{$fg[red]%}❮❮%{$reset_color%}"
+      local return_status="%{$fg[red]%}%(?..⏎)%{$reset_color%}"
+      
+      PROMPT='%{$fg[cyan]%}%c$(git_prompt_info) %(!.%{$fg_bold[red]%}#.%{$fg_bold[green]%}❯)%{$reset_color%} '
+  
+      ZSH_THEME_GIT_PROMPT_PREFIX=" %{$fg[blue]%}git%{$reset_color%}:%{$fg[red]%}"
+      ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
+      ZSH_THEME_GIT_PROMPT_DIRTY=""
+      ZSH_THEME_GIT_PROMPT_CLEAN=""
+  
+      RPROMPT='${return_status}$(git_prompt_status)%{$reset_color%}'
+  
+      ZSH_THEME_GIT_PROMPT_ADDED="%{$fg[green]%} ✚"
+      ZSH_THEME_GIT_PROMPT_MODIFIED="%{$fg[blue]%} ✹"
+      ZSH_THEME_GIT_PROMPT_DELETED="%{$fg[red]%} ✖"
+      ZSH_THEME_GIT_PROMPT_RENAMED="%{$fg[magenta]%} ➜"
+      ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[yellow]%} ═"
+      ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[cyan]%} ✭"
+  else 
+      MODE_INDICATOR="❮❮❮"
+      local return_status="%(?::⏎)"
+      
+      PROMPT='%c$(git_prompt_info) %(!.#.❯) '
+  
+      ZSH_THEME_GIT_PROMPT_PREFIX=" git:"
+      ZSH_THEME_GIT_PROMPT_SUFFIX=""
+      ZSH_THEME_GIT_PROMPT_DIRTY=""
+      ZSH_THEME_GIT_PROMPT_CLEAN=""
+  
+      RPROMPT='${return_status}$(git_prompt_status)'
+  
+      ZSH_THEME_GIT_PROMPT_ADDED=" ✚"
+      ZSH_THEME_GIT_PROMPT_MODIFIED=" ✹"
+      ZSH_THEME_GIT_PROMPT_DELETED=" ✖"
+      ZSH_THEME_GIT_PROMPT_RENAMED=" ➜"
+      ZSH_THEME_GIT_PROMPT_UNMERGED=" ═"
+      ZSH_THEME_GIT_PROMPT_UNTRACKED=" ✭"
+  fi  
+#+end_src sh
+
+* Git
+** Prompt 
+If there is on thing I had to name, that made me crave for oh-my-zsh
+it was the right site prompt stating repository state; here are the
+functions I ripped from it...
+#+begin_src sh :tangle yes 
+  function git_prompt_info() {
+      ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+      echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_SUFFIX"
+  }
+  
+  function parse_git_dirty() {
+      if [[ -n $(git status -s --ignore-submodules=dirty 2> /dev/null) ]]; then
+          echo "$ZSH_THEME_GIT_PROMPT_DIRTY"
+      else
+          echo "$ZSH_THEME_GIT_PROMPT_CLEAN"
+      fi
+  }
+  
+  function git_prompt_ahead() {
+      if $(echo "$(git log origin/$(current_branch)..HEAD 2> /dev/null)" | grep '^commit' &> /dev/null); then
+          echo "$ZSH_THEME_GIT_PROMPT_AHEAD"
+      fi
+  }
+  
+  function git_prompt_short_sha() {
+      SHA=$(git rev-parse --short HEAD 2> /dev/null) && echo "$ZSH_THEME_GIT_PROMPT_SHA_BEFORE$SHA$ZSH_THEME_GIT_PROMPT_SHA_AFTER"
+  }
+  
+  function git_prompt_long_sha() {
+      SH A=$(git rev-parse HEAD 2> /dev/null) && echo "$ZSH_THEME_GIT_PROMPT_SHA_BEFORE$SHA$ZSH_THEME_GIT_PROMPT_SHA_AFTER"
+  }
+  
+  function git_prompt_status() {
+      INDEX=$(git status --porcelain 2> /dev/null)
+      STATUS=""
+      if $(echo "$INDEX" | grep '^?? ' &> /dev/null); then
+          STATUS="$ZSH_THEME_GIT_PROMPT_UNTRACKED$STATUS"
+      fi
+      if $(echo "$INDEX" | grep '^A  ' &> /dev/null); then
+          STATUS="$ZSH_THEME_GIT_PROMPT_ADDED$STATUS"
+      elif $(echo "$INDEX" | grep '^M  ' &> /dev/null); then
+          STATUS="$ZSH_THEME_GIT_PROMPT_ADDED$STATUS"
+      fi
+      if $(echo "$INDEX" | grep '^ M ' &> /dev/null); then
+          STATUS="$ZSH_THEME_GIT_PROMPT_MODIFIED$STATUS"
+      elif $(echo "$INDEX" | grep '^AM ' &> /dev/null); then
+          STATUS="$ZSH_THEME_GIT_PROMPT_MODIFIED$STATUS"
+      elif $(echo "$INDEX" | grep '^ T ' &> /dev/null); then
+          STATUS="$ZSH_THEME_GIT_PROMPT_MODIFIED$STATUS"
+      fi
+      if $(echo "$INDEX" | grep '^R  ' &> /dev/null); then
+          STATUS="$ZSH_THEME_GIT_PROMPT_RENAMED$STATUS"
+      fi
+      if $(echo "$INDEX" | grep '^ D ' &> /dev/null); then
+          STATUS="$ZSH_THEME_GIT_PROMPT_DELETED$STATUS"
+      elif $(echo "$INDEX" | grep '^AD ' &> /dev/null); then
+          STATUS="$ZSH_THEME_GIT_PROMPT_DELETED$STATUS"
+      fi
+      if $(echo "$INDEX" | grep '^UU ' &> /dev/null); then
+          STATUS="$ZSH_THEME_GIT_PROMPT_UNMERGED$STATUS"
+      fi
+      echo $STATUS
+  }
+  
+#+end_src sh
+
+** Commands
+#+begin_src sh :tangle yes 
+  autoload -Uz gitaliasinit; gitaliasinit
+#+end_src sh

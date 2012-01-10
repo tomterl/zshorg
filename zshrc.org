@@ -22,7 +22,10 @@
    finaly ridden of the command substitution bug, was finished
    <2012-01-10 Tue 13:21>.
 * Variables
+
 ** Emacs setup
+On different systems emacs 24 will be installed in different
+locations; I set =EMACS_BASE= here; aliases etc. later will use it.
 #+begin_src sh :tangle yes
   if [ -z "${EMACS_BASE}" ]; then
       EMACS_BASE="/usr/local"
@@ -31,12 +34,17 @@
 #+end_src sh
 
 ** Completion
+
+Remnants of the =oh-my-zsh= inheritance of this document. As I'm not
+likely to swicth from the current behaviour, it is a =TODO= to get rid
+of these (later...).
    #+begin_src sh :tangle yes 
      CASE_SENSITIVE='true'
      COMPLETION_WAITING_DOTS=false
    #+end_src sh
 
 ** Coloring for standard commands
+GREP_COLOR is deprecated. =TODO= Define =GREP_COLORS=
 #+begin_src sh :tangle yes 
   export GREP_COLOR='1;32'
 #+end_src sh
@@ -46,9 +54,9 @@
   export PAGER='less'
 #+end_src sh
 
-** Collation
+** Characterset
 #+begin_src sh :tangle yes 
-  export LC_CTPY=$LANG
+  export LC_CTYPE=$LANG
 #+end_src sh
 
 ** Path/Fpath

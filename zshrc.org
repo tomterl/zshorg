@@ -955,7 +955,7 @@ Sorin oh-my-zsh theme
       MODE_INDICATOR="%{$fg_bold[red]%}❮%{$reset_color%}%{$fg[red]%}❮❮%{$reset_color%}"
       local return_status="%{$fg[red]%}%(?..⏎)%{$reset_color%}"
       
-      PROMPT='%{$fg[cyan]%}%c$(git_prompt_info) %(!.%{$fg_bold[red]%}#.%{$fg_bold[green]%}❯)%{$reset_color%} '
+      PROMPT='%{$fg[blue]%}%m%{$reset_color%}:%{$fg[cyan]%}%c$(git_prompt_info) %(!.%{$fg_bold[red]%}#.%{$fg_bold[green]%}❯)%{$reset_color%} '
   
       ZSH_THEME_GIT_PROMPT_PREFIX=" %{$fg[blue]%}git%{$reset_color%}:%{$fg[red]%}"
       ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"

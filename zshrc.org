@@ -33,16 +33,6 @@ locations; I set =EMACS_BASE= here; aliases etc. later will use it.
   fi
 #+end_src sh
 
-** Completion
-
-Remnants of the =oh-my-zsh= inheritance of this document. As I'm not
-likely to swicth from the current behaviour, it is a =TODO= to get rid
-of these (later...).
-   #+begin_src sh :tangle yes 
-     CASE_SENSITIVE='true'
-     COMPLETION_WAITING_DOTS=false
-   #+end_src sh
-
 ** Coloring for standard commands
 GREP_COLOR is deprecated. =TODO= Define =GREP_COLORS=
 #+begin_src sh :tangle yes 
@@ -205,14 +195,9 @@ Defining this alias prevents the =nautilus= started by
   autoload -Uz bashcompinit; bashcompinit
 #+end_src sh
 
-** Case insensitive, partial word and substring completion
+** Case sensitive, partial word and substring completion
    #+begin_src sh   :tangle yes 
-     if [ "x$CASE_SENSITIVE" = "xtrue" ]; then
-         zstyle ':completion:*' matcher-list 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-         unset CASE_SENSITIVE
-     else
-         zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-     fi
+     zstyle ':completion:*' matcher-list 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
    #+end_src
 ** Colors/Menu
    #+begin_src sh :tangle yes 
@@ -264,21 +249,7 @@ Defining this alias prevents the =nautilus= started by
    #+begin_src sh :tangle yes 
      zstyle ':completion::complete:*' use-cache 1
      zstyle ':completion::complete:*' cache-path ~/.zsh.d/cache/     
-   #+end_src sh
-   
-** Completion with dots
-   #+begin_src sh :tangle yes
-     if [ "x$COMPLETION_WAITING_DOTS" = "xtrue" ]; then
-         expand-or-complete-with-dots() {
-             echo -n "\e[31m......\e[0m"
-             zle expand-or-complete
-             zle redisplay
-         }
-         zle -N expand-or-complete-with-dots
-         bindkey "^I" expand-or-complete-with-dots
-     fi
-   #+end_src
-   
+   #+end_src sh   
 ** Devserver
 #+begin_src sh  :tangle yes
   if [[ -r "/usr/share/bash-completion/devserver" ]]; then

@@ -880,6 +880,7 @@ which I don't want correction.
 #+end_src sh
 
 * Hooks
+I use hooks in my prompt setup
 #+begin_src sh :tangle yes 
   autoload -U add-zsh-hook 
 #+end_src sh
@@ -891,6 +892,10 @@ which I don't want correction.
 #+end_src sh
 
 ** Title
+In =omz_termsupport_preexec= =$(= is escaped in the second argument to
+=function title()=; this is to prevent multiple execution of the =$()=
+command -- prompt substitution as used in =title= (option =-P= to
+=print=) would execute the command at least once.
 #+begin_src sh :tangle yes
   function title {
     [ "$DISABLE_AUTO_TITLE" != "true" ] || return
@@ -915,6 +920,7 @@ which I don't want correction.
     emulate -L zsh
     setopt no_extended_glob
     local CMD=${1[(wr)^(*=*|sudo|ssh|-*)]} #cmd name only, or if this is sudo or ssh, the next cmd
+    #
     title "$CMD" "%100>...>${2//\$\(/\\\$(}%<<"
   }
   

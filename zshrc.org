@@ -402,13 +402,13 @@ Defining this alias prevents the =nautilus= started by
 
 ** Substring search
 *** Variables
-   	#+begin_src sh :tangle yes 
+#+begin_src sh :tangle yes 
   HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=magenta,fg=white,bold'
   HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=red,fg=white,bold'
   HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS='i'
-   	#+end_src sh
+#+end_src sh
 *** Widgets
-	#+begin_src sh :tangle yes 
+#+begin_src sh :tangle yes 
   function history-substring-search-up() {
       _history-substring-search-begin
   
@@ -431,9 +431,9 @@ Defining this alias prevents the =nautilus= started by
   
   zle -N history-substring-search-up
   zle -N history-substring-search-down  
-	#+end_src sh
+#+end_src sh
 *** Functions
-	#+begin_src sh :tangle yes 
+#+begin_src sh :tangle yes 
   function _history-substring-search-begin() {
     _history_substring_search_move_cursor_eol=false
     _history_substring_search_query_highlight=
@@ -793,7 +793,7 @@ Defining this alias prevents the =nautilus= started by
       _history_substring_search_query_highlight=$HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND
     fi
   }  
-	#+end_src sh
+#+end_src sh
 
 *** Activation
 	#+begin_src sh :tangle yes

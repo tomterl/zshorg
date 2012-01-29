@@ -27,9 +27,11 @@
 #+STARTUP: logdone
 #+STARTUP: indent
 #+PROPERTY: padline yes
-#+OPTIONS: toc:t num:t todo:nil pri:nil tags:nil ^:nil TeX:nil
 #+EXPORT_EXCLUDE_TAGS: ignoreExport
-
+#+OPTIONS:   H:3 num:t toc:t \n:nil @:t ::t |:t ^:nil -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:t ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+STYLE: <link rel="stylesheet" type="text/css" href="http://orgmode.org/org-manual.css" />
 * =zshrc=
 #+begin_src sh :tangle .zshrc :noweb tangle :exports code
   <<variables>>
@@ -1141,8 +1143,8 @@ The git stuff has to be replaced by the builtin vcs stuff of zsh.
   
   prompt_tomte_setup "$@"  
 #+end_src
-*** Git
-**** Init
+** Git
+*** Init
 #+begin_src sh :tangle .zsh.d/functions/gitaliasinit
   _GITALIAS_DIR=${:-~/.zsh.d/functions/git}
   gitaliasinit() {
@@ -1157,31 +1159,31 @@ The git stuff has to be replaced by the builtin vcs stuff of zsh.
   
   [[ -o kshautoload ]] || gitaliasinit "$@"
 #+end_src sh
-**** Add
+*** Add
 #+begin_src sh :tangle .zsh.d/functions/git/add
   git add "${argv[@]}"
 #+end_src
-**** Commit
+*** Commit
 #+begin_src sh :tangle .zsh.d/functions/git/commit
   git commit "${argv[@]}"
 #+end_src
-**** Diff
+*** Diff
 #+begin_src sh :tangle .zsh.d/functions/git/gdiff
   git diff "${argv[@]}"
 #+end_src
-**** Log
+*** Log
 #+begin_src sh :tangle .zsh.d/functions/git/glog
   git log "${argv[@]}"
 #+end_src
-**** Stat
+*** Stat
 #+begin_src sh :tangle .zsh.d/functions/git/gstat
   git stat "${argv[@]}"
 #+end_src
-**** Pull
+*** Pull
 #+begin_src sh :tangle .zsh.d/functions/git/pull
   git pull "${argv[@]}"
 #+end_src
-**** Push
+*** Push
 #+begin_src sh :tangle .zsh.d/functions/git/push
   git push "${argv[@]}"
 #+end_src

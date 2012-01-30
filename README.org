@@ -1,7 +1,10 @@
 * My literate =zsh= configuration.
 
 This is my org-mode configuration, based off of my previous [[https://github.com/robbyrussell/oh-my-zsh][oh-my-zsh]]
-setup.
+setup. So the setup presented here is at the moment almost completly
+owed to the crazy and wonderful croud assambled there. And to Sven
+Guckes and Julius Plenz -- their book "zsh - Die magische Shell" is a
+helpful resource in setting up zsh.
 
 Not everything is explained in prose yet, but I'll get there, for my
 own good.

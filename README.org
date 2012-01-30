@@ -34,10 +34,19 @@ during tangling.
    Either =C-c C-v C-t= while visiting the file =zshrc.org= in emacs, or
    #+BEGIN_SRC sh
      cd ~/.zshorg
-     make config
+     make tangle
    #+END_SRC
    this will overwrite =~/.zshrc= and a couple of files in =~/.zsh.d=;
-   make sure you have backups.
+   make sure you have backups. If you use the makefile, you have to
+   tweak the =ORGINSTALL= variable or provide it at the commandline
+   #+BEGIN_SRC sh
+     cd ~/.zshorg
+     make tangle ORGINSTALL=your/actual/path/to/the/org/elc/files
+   #+END_SRC
+5. Install external addons
+   #+BEGIN_SRC sh
+     make externals
+   #+END_SRC
 ** =org-mode= config                                         :ingnoreExport:
 #+STARTUP: indent
 #+STARTUP: content

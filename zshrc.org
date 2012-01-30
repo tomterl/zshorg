@@ -1,4 +1,10 @@
 * Introduction
+:LOGBOOK:
+- Note taken on [2012-01-30 Mo 11:53] \\
+  tangle to the correct  locations; use logbook drawer
+- Note taken on [2012-01-29 So 01:15] \\
+  Git functions added; prompt added; html export style
+:END:
 
   This is a literate programming zsh configuration written in
   org-mode/org-babel.
@@ -27,13 +33,14 @@
 #+STARTUP: logdone
 #+STARTUP: indent
 #+PROPERTY: padline yes
+#+PROPERTY: LOG_INTO_DRAWER LOGBOOK
 #+EXPORT_EXCLUDE_TAGS: ignoreExport
 #+OPTIONS:   H:3 num:t toc:t \n:nil @:t ::t |:t ^:nil -:t f:t *:t <:t
 #+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
 #+INFOJS_OPT: view:nil toc:t ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 #+STYLE: <link rel="stylesheet" type="text/css" href="http://orgmode.org/org-manual.css" />
 * =zshrc=
-#+begin_src sh :tangle .zshrc :noweb tangle :exports code
+#+begin_src sh :tangle ~/.zshrc :noweb tangle :exports code
   <<variables>>
   <<modules>>
   <<aliases>>
@@ -41,7 +48,7 @@
   <<options>>
   <<keybindings>>
   <<command_completion>>
-  <<commandine_editing>>
+  <<commandline_editing>>
   <<history>>
   <<dired>>
   <<hooks>>
@@ -1098,7 +1105,7 @@ functions I ripped from it...
 At the moment this is based on the omz theme sorin.
 The git stuff has to be replaced by the builtin vcs stuff of zsh.
 
-#+begin_src sh :tangle .zsh.d/functions/prompt_tomte_setup
+#+begin_src sh :tangle ~/.zsh.d/functions/prompt_tomte_setup
   function prompt_tomte_setup {
       if [[ "$TERM" != "dumb" ]] && [[ "$DISABLE_LS_COLORS" != "true" ]]; then
           MODE_INDICATOR="%{$fg_bold[red]%}❮%{$reset_color%}%{$fg[red]%}❮❮%{$reset_color%}"
@@ -1145,7 +1152,7 @@ The git stuff has to be replaced by the builtin vcs stuff of zsh.
 #+end_src
 ** Git
 *** Init
-#+begin_src sh :tangle .zsh.d/functions/gitaliasinit
+#+begin_src sh :tangle ~/.zsh.d/functions/gitaliasinit
   _GITALIAS_DIR=${:-~/.zsh.d/functions/git}
   gitaliasinit() {
       fpath=($_GITALIAS_DIR $fpath)
@@ -1160,30 +1167,30 @@ The git stuff has to be replaced by the builtin vcs stuff of zsh.
   [[ -o kshautoload ]] || gitaliasinit "$@"
 #+end_src sh
 *** Add
-#+begin_src sh :tangle .zsh.d/functions/git/add
+#+begin_src sh :tangle ~/.zsh.d/functions/git/add
   git add "${argv[@]}"
 #+end_src
 *** Commit
-#+begin_src sh :tangle .zsh.d/functions/git/commit
+#+begin_src sh :tangle ~/.zsh.d/functions/git/commit
   git commit "${argv[@]}"
 #+end_src
 *** Diff
-#+begin_src sh :tangle .zsh.d/functions/git/gdiff
+#+begin_src sh :tangle ~/.zsh.d/functions/git/gdiff
   git diff "${argv[@]}"
 #+end_src
 *** Log
-#+begin_src sh :tangle .zsh.d/functions/git/glog
+#+begin_src sh :tangle ~/.zsh.d/functions/git/glog
   git log "${argv[@]}"
 #+end_src
 *** Stat
-#+begin_src sh :tangle .zsh.d/functions/git/gstat
-  git stat "${argv[@]}"
+#+begin_src sh :tangle ~/.zsh.d/functions/git/gstat
+  git status "${argv[@]}"
 #+end_src
 *** Pull
-#+begin_src sh :tangle .zsh.d/functions/git/pull
+#+begin_src sh :tangle ~/.zsh.d/functions/git/pull
   git pull "${argv[@]}"
 #+end_src
 *** Push
-#+begin_src sh :tangle .zsh.d/functions/git/push
+#+begin_src sh :tangle ~/.zsh.d/functions/git/push
   git push "${argv[@]}"
 #+end_src

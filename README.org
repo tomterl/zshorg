@@ -1,0 +1,44 @@
+* My literate =zsh= configuration.
+
+This is my org-mode configuration, based off of my previous [[https://github.com/robbyrussell/oh-my-zsh][oh-my-zsh]]
+setup.
+
+Not everything is explained in prose yet, but I'll get there, for my
+own good.
+
+This is, and will be, a work in progress. And somtime I hope a work of
+beauty.
+
+The whole configuration setup is in =zshrc.org=, the file is split
+during tangling.
+
+** Prerequisites
+- emacs 24
+- org-mode >= 7.8.03 (exported after 23d january 2012)
+- make
+
+** Installation
+1. Clone the github repository
+   #+begin_src sh
+     cd $HOME
+     git clone git://github.com/tomterl/zshorg.git .zshorg
+   #+end_src
+2. Read the file =zshrc.org= and tinker with the settings.
+   
+3. Backup your existing config
+   #+BEGIN_SRC sh
+     mkdir -p ~/Backups
+     tar cfvz ~/Backups/zsh-config-$(date +"%F-%T") ~/.zshrc ~/.zsh.d
+   #+END_SRC
+4. Generate the new config
+   Either =C-c C-v C-t= while visiting the file =zshrc.org= in emacs, or
+   #+BEGIN_SRC sh
+     cd ~/.zshorg
+     make config
+   #+END_SRC
+   this will overwrite =~/.zshrc= and a couple of files in =~/.zsh.d=;
+   make sure you have backups.
+** =org-mode= config                                         :ingnoreExport:
+#+STARTUP: indent
+#+STARTUP: content
+#+EXPORT_EXCLUDE_TAGS: ignoreExport

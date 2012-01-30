@@ -1198,3 +1198,7 @@ The git stuff has to be replaced by the builtin vcs stuff of zsh.
 #+begin_src sh :tangle ~/.zsh.d/functions/git/push
   git push "${argv[@]}"
 #+end_src
+*** Checkout
+#+begin_src sh :tangle ~/.zsh.d/functions/git/checkout
+  git checkout "${argv[@]}"
+#+end_src

@@ -966,10 +966,11 @@ I use hooks in my prompt setup
 #+end_src sh
 
 *** Title
-In =omz_termsupport_preexec= =$(= is escaped in the second argument to
+In =omz_termsupport_preexec= =$(= and =%= are escaped in the second argument to
 =function title()=; this is to prevent multiple execution of the =$()=
 command -- prompt substitution as used in =title= (option =-P= to
-=print=) would execute the command at least once.
+=print=) would execute the command at least once, and confusion of =%=
+tags to commands like =date= with prompt =%= tags.
 #+begin_src sh 
   function title {
     [ "$DISABLE_AUTO_TITLE" != "true" ] || return
@@ -993,9 +994,12 @@ command -- prompt substitution as used in =title= (option =-P= to
   function omz_termsupport_preexec {
     emulate -L zsh
     setopt no_extended_glob
-    local CMD=${1[(wr)^(*=*|sudo|ssh|-*)]} #cmd name only, or if this is sudo or ssh, the next cmd
+    local CMD_1=${1[(wr)^(*=*|sudo|ssh|-*)]} #cmd name only, or if this is sudo or ssh, the next cmd
+    local CMD_2=${2//\$\(/\\\$(} # ')}
+    CMD_1=${CMD_1//\%/%%}          
+    CMD_2=${CMD_2//\%/%%}          
     #
-    title "$CMD" "%100>...>${2//\$\(/\\\$(}%<<"
+    title "${CMD_1}" "%100>...>${CMD_2}%<<"
   }
   
   add-zsh-hook precmd  omz_termsupport_precmd

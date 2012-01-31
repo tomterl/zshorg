@@ -1,10 +1,10 @@
 * My literate =zsh= configuration.
 
-This is my org-mode configuration, based off of my previous [[https://github.com/robbyrussell/oh-my-zsh][oh-my-zsh]]
-setup. So the setup presented here is at the moment almost completly
-owed to the crazy and wonderful croud assambled there. And to Sven
-Guckes and Julius Plenz -- their book "zsh - Die magische Shell" is a
-helpful resource in setting up zsh.
+This is my zsh configuration as [[http://orgmode.org][org-mode]] document, based off of my
+previous [[https://github.com/robbyrussell/oh-my-zsh][oh-my-zsh]] setup. So the setup presented here is at the moment
+almost completly owed to the crazy and wonderful croud assambled
+there. And to Sven Guckes and Julius Plenz -- their book "zsh - Die
+magische Shell" is a helpful resource in setting up zsh.
 
 Not everything is explained in prose yet, but I'll get there, for my
 own good.
@@ -22,10 +22,10 @@ during tangling.
 
 ** Installation
 1. Clone the github repository
-   #+BEGIN_SRC sh
+   #+begin_src sh
      cd $HOME
      git clone git://github.com/tomterl/zshorg.git .zshorg
-   #+END_SRC
+   #+end_src
 2. Read the file =zshrc.org= and tinker with the settings.
    
 3. Backup your existing config

@@ -21,35 +21,36 @@ during tangling.
 - make
 
 ** Installation
-1. Clone the github repository
-   #+begin_src sh
-     cd $HOME
-     git clone git://github.com/tomterl/zshorg.git .zshorg
-   #+end_src
-2. Read the file =zshrc.org= and tinker with the settings.
+- Clone the github repository
+  #+BEGIN_SRC sh
+    cd $HOME
+    git clone git://github.com/tomterl/zshorg.git .zshorg
+  #+END_SRC
+
+- Read the file =zshrc.org= and tinker with the settings.
    
-3. Backup your existing config
-   #+BEGIN_SRC sh
-     mkdir -p ~/Backups
-     tar cfvz ~/Backups/zsh-config-$(date +"%F-%T") ~/.zshrc ~/.zsh.d
-   #+END_SRC
-4. Generate the new config
-   Either =C-c C-v C-t= while visiting the file =zshrc.org= in emacs, or
-   #+BEGIN_SRC sh
-     cd ~/.zshorg
-     make tangle
-   #+END_SRC
-   this will overwrite =~/.zshrc= and a couple of files in =~/.zsh.d=;
-   make sure you have backups. If you use the makefile, you have to
-   tweak the =ORGINSTALL= variable or provide it at the commandline
-   #+BEGIN_SRC sh
-     cd ~/.zshorg
-     make tangle ORGINSTALL=your/actual/path/to/the/org/elc/files
-   #+END_SRC
-5. Install external addons
-   #+BEGIN_SRC sh
-     make externals
-   #+END_SRC
+- Backup your existing config
+  #+BEGIN_SRC sh
+    mkdir -p ~/Backups
+    tar cfvz ~/Backups/zsh-config-$(date +"%F-%T") ~/.zshrc ~/.zsh.d
+  #+END_SRC
+- Generate the new config
+  Either =C-c C-v C-t= while visiting the file =zshrc.org= in emacs, or
+  #+BEGIN_SRC sh
+    cd ~/.zshorg
+    make tangle
+  #+END_SRC
+  this will overwrite =~/.zshrc= and a couple of files in =~/.zsh.d=;
+  make sure you have backups. If you use the makefile, you have to
+  tweak the =ORGINSTALL= variable or provide it at the commandline
+  #+BEGIN_SRC sh
+    cd ~/.zshorg
+    make tangle ORGINSTALL=your/actual/path/to/the/org/elc/files
+  #+END_SRC
+- Install external addons
+  #+BEGIN_SRC sh
+    make externals
+  #+END_SRC
 ** =org-mode= config                                         :ingnoreExport:
 #+STARTUP: indent
 #+STARTUP: content

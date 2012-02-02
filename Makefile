@@ -12,6 +12,7 @@ tangle:
 externals: 
 	mkdir -p ${ADDONS}; \
 	cd ${ADDONS}; \
-	if [ ! -d zsh-syntax-highlighting ]; then git clone git://github.com/zsh-users/zsh-syntax-highlighting.git; fi
+	if [ ! -d zsh-history-substring-search ]; then git clone git://github.com/zsh-users/zsh-history-substring-search.git; fi; \
+	if [ ! -d  zsh-syntax-highlighting ]; then git clone git://github.com/zsh-users/zsh-syntax-highlighting.git; fi
 
 .PHONY: tangle externals

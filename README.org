@@ -51,6 +51,10 @@ during tangling.
   #+BEGIN_SRC sh
     make externals
   #+END_SRC
+** External addons
+[[https://github.com/zsh-users/zsh-syntax-highlighting][Syntax highlighting]] and [[https://github.com/zsh-users/zsh-history-substring-search][substring search a la fish]] can be installed
+via =make externals=; the repositories will be cloned to
+=~/.zsh.d/addons/=.
 ** =org-mode= config                                         :ingnoreExport:
 #+STARTUP: indent
 #+STARTUP: content

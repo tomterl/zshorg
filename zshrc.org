@@ -199,6 +199,13 @@ Defining this alias prevents the =nautilus= started by
   }
 #+end_src sh
 
+*** Date from unix timestamp
+#+begin_src sh 
+  function fromut() {
+      echo `perl -e "print scalar(localtime(${1})),\"\n\";"`
+  }
+#+end_src sh
+
 ** Options
 :PROPERTIES:
 :noweb-ref: options

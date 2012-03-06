@@ -90,10 +90,21 @@ GREP_COLOR is deprecated. =TODO= Define =GREP_COLORS=
 #+end_src sh
 
 *** Path/Fpath
+Haskell development.
+#+begin_src sh
+  path=( ~/.cabal/bin $path )
+#+end_src
+This should always be the last part of =path= tinkering, as I'm used
+to be able to override any executable by putting a replacement or
+wrapper in my =~/bin=.
 #+begin_src sh  
   path=( ~/bin $path )
-  fpath=( ~/.zsh.d/functions $fpath )
 #+end_src sh
+Finaly adjust the =fpath=; a lot of the stuff following is tangled
+into files autoloadable
+#+begin_src sh 
+  fpath=( ~/.zsh.d/functions $fpath )
+#+end_src 
 
 *** Bashlibs
 #+begin_src sh  

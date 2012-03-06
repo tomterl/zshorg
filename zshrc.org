@@ -90,6 +90,11 @@ GREP_COLOR is deprecated. =TODO= Define =GREP_COLORS=
 #+end_src sh
 
 *** Path/Fpath
+Newest GNU R in ~/opt
+#+begin_src sh 
+  path=( ~/opt/bin $path )
+#+end_src
+
 Haskell development.
 #+begin_src sh
   path=( ~/.cabal/bin $path )

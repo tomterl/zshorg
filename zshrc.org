@@ -162,6 +162,7 @@ Defining this alias prevents the =nautilus= started by
 *** ssh in tmux
 #+begin_src sh 
   alias fixtmuxenv='. ~/bin/fixtmuxenv'
+  alias ssht='fixtmuxenv && ssh'
 #+end_src 
 
 ** Functions

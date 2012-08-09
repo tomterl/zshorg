@@ -66,12 +66,12 @@
 *** Emacs setup
 On different systems emacs 24 will be installed in different
 locations; I set =EMACS_BASE= here; aliases etc. later will use it.
-#+begin_src sh
+#+BEGIN_SRC sh
   if [ -z "${EMACS_BASE}" ]; then
       EMACS_BASE="/usr/local"
       export EMACS_BASE
   fi
-#+end_src
+#+END_SRC
 
 *** Coloring for standard commands
 GREP_COLOR is deprecated. =TODO= Define =GREP_COLORS=

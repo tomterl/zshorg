@@ -71,23 +71,23 @@ locations; I set =EMACS_BASE= here; aliases etc. later will use it.
       EMACS_BASE="/usr/local"
       export EMACS_BASE
   fi
-#+end_src sh
+#+end_src
 
 *** Coloring for standard commands
 GREP_COLOR is deprecated. =TODO= Define =GREP_COLORS=
 #+begin_src sh 
   export GREP_COLOR='1;32'
-#+end_src sh
+#+end_src
 
 *** Pager
 #+begin_src sh  
   export PAGER='less'
-#+end_src sh
+#+end_src
 
 *** Characterset
 #+begin_src sh  
   export LC_CTYPE=$LANG
-#+end_src sh
+#+end_src
 
 *** Path/Fpath
 Newest GNU R in ~/opt
@@ -104,7 +104,7 @@ to be able to override any executable by putting a replacement or
 wrapper in my =~/bin=.
 #+begin_src sh  
   path=( ~/bin $path )
-#+end_src sh
+#+end_src
 Finaly adjust the =fpath=; a lot of the stuff following is tangled
 into files autoloadable
 #+begin_src sh 
@@ -114,12 +114,12 @@ into files autoloadable
 *** Bashlibs
 #+begin_src sh  
   export BASH_LIBS_DIR=~/lib/bash
-#+end_src sh
+#+end_src
 
 *** Editor
 #+begin_src sh  
   export EDITOR="${EMACS_BASE}/bin/emacsclient -nw -c"
-#+end_src sh
+#+end_src
 
 ** Modules
 :PROPERTIES:
@@ -129,7 +129,7 @@ into files autoloadable
 *** =colors=
 #+begin_src sh  
   autoload colors; colors
-#+end_src sh
+#+end_src
 
 ** Aliases
 :PROPERTIES:
@@ -149,7 +149,7 @@ defined here reflect that.
 #+begin_src sh  
   alias emacs="${EMACS_BASE}/bin/emacs"
   alias emc="${EMACS_BASE}/bin/emacsclient -c -nw"  
-#+end_src sh
+#+end_src
 *** Desktop
 I use awesome and don't want =nautilus= to take over my desktop. 
 Defining this alias prevents the =nautilus= started by
@@ -157,7 +157,7 @@ Defining this alias prevents the =nautilus= started by
 
 #+begin_src sh 
   alias nautilus='nautilus --no-desktop'  
-#+end_src sh
+#+end_src
 
 *** ssh in tmux
 #+begin_src sh 
@@ -206,7 +206,7 @@ Defining this alias prevents the =nautilus= started by
           echo "'$1' is not a valid file"
       fi
   }  
-#+end_src sh
+#+end_src
 
 *** Source bash scripts
 #+begin_src sh  
@@ -219,14 +219,14 @@ Defining this alias prevents the =nautilus= started by
       
       source "$@"
   }
-#+end_src sh
+#+end_src
 
 *** Date from unix timestamp
 #+begin_src sh 
   function fromut() {
       echo `perl -e "print scalar(localtime(${1})),\"\n\";"`
   }
-#+end_src sh
+#+end_src
 
 
 *** Attach to tmux session
@@ -239,7 +239,7 @@ Defining this alias prevents the =nautilus= started by
          tmux attach
      fi 
   }
-#+end_src sh
+#+end_src
 *** ssh variables
 #+begin_src sh 
   function grabtmuxenv() {
@@ -267,7 +267,7 @@ Defining this alias prevents the =nautilus= started by
       hash_dirs \
       multios \
       re_match_pcre
-#+end_src sh
+#+end_src
 
 ** Keybindings
 :PROPERTIES:
@@ -276,7 +276,7 @@ Defining this alias prevents the =nautilus= started by
 *** Emacs style keybindings!
 #+begin_src sh  
   bindkey -e
-#+end_src sh
+#+end_src
 ** Command completion
 :PROPERTIES:
 :noweb-ref: command_completion
@@ -284,7 +284,7 @@ Defining this alias prevents the =nautilus= started by
 *** =compinit=
 #+begin_src sh  
   autoload -Uz compinit; compinit
-#+end_src sh
+#+end_src
 
 *** Options
    #+begin_src sh 
@@ -298,17 +298,17 @@ Defining this alias prevents the =nautilus= started by
 *** =complist= module
    #+begin_src sh  
      zmodload -i zsh/complist
-   #+end_src sh
+   #+end_src
 
 *** .zshrc
 #+begin_src sh  
   zstyle :compinstall filename "$HOME/.zshrc"
-#+end_src sh
+#+end_src
 
 *** Bashcompletion
 #+begin_src sh  
   autoload -Uz bashcompinit; bashcompinit
-#+end_src sh
+#+end_src
 
 *** Case sensitive, partial word and substring completion
    #+begin_src sh    
@@ -318,17 +318,17 @@ Defining this alias prevents the =nautilus= started by
    #+begin_src sh  
      zstyle ':completion:*' list-colors ''     
      zstyle ':completion:*:*:*:*:*' menu select
-   #+end_src sh
+   #+end_src
 *** Keybindings   
    #+begin_src sh  
      bindkey -M menuselect '^o' accept-and-infer-next-history  
-   #+end_src sh
+   #+end_src
 *** Process completion
    Menu of own processes for kill.
    #+begin_src sh  
      zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
      zstyle ':completion:*:*:*:*:processes' command "ps -u $(whoami) -o pid,user,comm -w -w"     
-   #+end_src sh
+   #+end_src
 *** Hostnames
    #+begin_src sh  
      [ -r /etc/ssh/ssh_known_hosts ] && _global_ssh_hosts=(${${${${(f)"$(</etc/ssh/ssh_known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _ssh_hosts=()
@@ -343,7 +343,7 @@ Defining this alias prevents the =nautilus= started by
          localhost
      )
      zstyle ':completion:*:hosts' hosts $hosts
-   #+end_src sh
+   #+end_src
 *** Usernames
    Ignore most system users
    #+begin_src sh  
@@ -358,19 +358,19 @@ Defining this alias prevents the =nautilus= started by
      
      # ... unless we really want to.
      zstyle '*' single-ignored show          
-   #+end_src sh
+   #+end_src
 *** Caching
    Some completions need caching (dpkg, ...)
    #+begin_src sh  
      zstyle ':completion::complete:*' use-cache 1
      zstyle ':completion::complete:*' cache-path ~/.zsh.d/cache/     
-   #+end_src sh   
+   #+end_src   
 *** Devserver
 #+begin_src sh  
   if [[ -r "/usr/share/bash-completion/devserver" ]]; then
       bash_source /usr/share/bash-completion/devserver
   fi  
-#+end_src sh
+#+end_src
 
 ** Commandline editing
 :PROPERTIES:
@@ -386,7 +386,7 @@ Defining this alias prevents the =nautilus= started by
   bindkey "^[OF" end-of-line
   bindkey "^[[1;5C" forward-word
   bindkey "^[[1;5D" backward-word
-#+end_src sh
+#+end_src
 
 *** Deletion
 #+begin_src sh 
@@ -398,7 +398,7 @@ Defining this alias prevents the =nautilus= started by
 *** Insert the last shell word again
 #+begin_src sh 
   bindkey "^[m" copy-prev-shell-word
-#+end_src sh
+#+end_src
 
 *** URLs
 #+begin_src sh 
@@ -410,20 +410,20 @@ Defining this alias prevents the =nautilus= started by
 #+begin_src sh  
   setopt no_beep \
       rm_star_wait
-#+end_src sh
+#+end_src
 
 *** Syntax highlighting
 #+begin_src sh 
   [[ -f ~/.zsh.d/addons/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
       source ~/.zsh.d/addons/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-#+end_src sh 
+#+end_src 
 
 *** sudo
 #+begin_src sh 
   run-with-sudo () { LBUFFER="sudo $LBUFFER" }
   zle -N run-with-sudo
   bindkey '^Xs' run-with-sudo  
-#+end_src sh 
+#+end_src 
 
 *** Empty ^I lists directory
 #+begin_src sh  
@@ -435,7 +435,7 @@ Defining this alias prevents the =nautilus= started by
   }
   zle -N complete-or-list
   bindkey '^I' complete-or-list
-#+end_src sh
+#+end_src
 *** Pipe to
 #+begin_src sh 
   typeset -Ag abbreviations
@@ -470,7 +470,7 @@ Defining this alias prevents the =nautilus= started by
   bindkey " " magic-abbrev-expand
   bindkey "^x " no-magic-abbrev-expand
   bindkey -M isearch " " self-insert
-#+end_src sh 
+#+end_src 
 
 ** History
 :PROPERTIES:
@@ -481,7 +481,7 @@ Defining this alias prevents the =nautilus= started by
      HISTFILE=~/.histfile
      HISTSIZE=10000
      SAVEHIST=10000
-   #+end_src sh 
+   #+end_src 
 *** Options
 #+begin_src sh   
   setopt append_history
@@ -494,7 +494,7 @@ Defining this alias prevents the =nautilus= started by
   setopt share_history
   setopt hist_fcntl_lock 
   setopt hist_ignore_all_dups
-#+end_src sh
+#+end_src
 
 *** Aliases
    =lh= is short for =load history=, =fc= is a =zsh=-builtin to access
@@ -504,13 +504,13 @@ Defining this alias prevents the =nautilus= started by
 
    #+begin_src sh  
 	 alias lh='fc -RI'  
-   #+end_src sh
+   #+end_src
 *** Functions
    #+begin_src sh  
   function zsh_stats() {
     history | awk '{print $2}' | sort | uniq -c | sort -rn | head
   }  
-   #+end_src sh
+   #+end_src
 
 *** Keybindings
    #+begin_src sh  
@@ -519,19 +519,19 @@ Defining this alias prevents the =nautilus= started by
   bindkey "^[[6~" down-line-or-history
   bindkey '^[[A' up-line-or-search
   bindkey '^[[B' down-line-or-search
-   #+end_src sh
+   #+end_src
 
 *** Substring search
 #+begin_src sh 
   [[ -f ~/.zsh.d/addons/zsh-history-substring-search/zsh-history-substring-search.zsh ]] && \
       source ~/.zsh.d/addons/zsh-history-substring-search/zsh-history-substring-search.zsh
-#+end_src sh 
+#+end_src 
 
 ** Jobcontrol
 *** Options
 #+begin_src sh  
   setopt long_list_jobs
-#+end_src sh
+#+end_src
 
 ** Autocorrection
 I use autocorrection, but define a couple of aliases for commands for
@@ -541,7 +541,7 @@ which I don't want correction.
   setopt correct \
       correct_all 
   
-#+end_src sh
+#+end_src
 *** Aliases
 #+begin_src sh 
   alias man='nocorrect man'
@@ -562,7 +562,7 @@ which I don't want correction.
   setopt auto_cd
   setopt pushd_ignore_dups
   setopt pushd_silent
-#+end_src sh
+#+end_src
 *** Aliases
 #+begin_src sh  
   alias ..='cd ..'
@@ -594,7 +594,7 @@ which I don't want correction.
   function mcd() { 
     mkdir -p "$1" && cd "$1"; 
   }    
-#+end_src sh
+#+end_src
 
 ** Hooks
 :PROPERTIES:
@@ -603,7 +603,7 @@ which I don't want correction.
 I use hooks in my prompt setup
 #+begin_src sh  
   autoload -U add-zsh-hook 
-#+end_src sh
+#+end_src
 
 ** Terminal
 :PROPERTIES:
@@ -612,7 +612,7 @@ I use hooks in my prompt setup
 *** Colors
 #+begin_src sh  
   eval $(dircolors)
-#+end_src sh
+#+end_src
 
 *** Title
 In =omz_termsupport_preexec= =$(= and =%= are escaped in the second argument to
@@ -654,7 +654,7 @@ tags to commands like =date= with prompt =%= tags.
   add-zsh-hook precmd  omz_termsupport_precmd
   add-zsh-hook preexec omz_termsupport_preexec
   
-#+end_src sh
+#+end_src
 
 ** Prompt
 :PROPERTIES:
@@ -663,16 +663,16 @@ tags to commands like =date= with prompt =%= tags.
 *** Module
 #+begin_src sh 
   autoload -U promptinit; promptinit
-#+end_src sh
+#+end_src
 
 #+begin_src sh  
   setopt prompt_subst
-#+end_src sh 
+#+end_src 
 
 Sorin oh-my-zsh theme
 #+begin_src sh  
   prompt tomte
-#+end_src sh
+#+end_src
 
 ** Git
 :PROPERTIES:
@@ -742,12 +742,12 @@ functions I ripped from it...
       echo $STATUS
   }
   
-#+end_src sh
+#+end_src
 
 *** Commands
 #+begin_src sh  
   autoload -Uz gitaliasinit; gitaliasinit
-#+end_src sh
+#+end_src
 
 * Library
 :PROPERTIES:
@@ -818,7 +818,7 @@ The git stuff has to be replaced by the builtin vcs stuff of zsh.
   }
   
   [[ -o kshautoload ]] || gitaliasinit "$@"
-#+end_src sh
+#+end_src
 *** Add
 #+begin_src sh :tangle ~/.zsh.d/functions/git/add
   git add "${argv[@]}"

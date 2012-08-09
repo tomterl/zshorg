@@ -851,3 +851,7 @@ The git stuff has to be replaced by the builtin vcs stuff of zsh.
 #+begin_src sh :tangle ~/.zsh.d/functions/git/checkout
   git checkout "${argv[@]}"
 #+end_src
+*** Clone
+#+begin_src sh :tangle ~/.zsh.d/functions/git/clone
+  git clone "${argv[@]}"
+#+end_src

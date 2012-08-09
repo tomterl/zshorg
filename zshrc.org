@@ -71,7 +71,7 @@ locations; I set =EMACS_BASE= here; aliases etc. later will use it.
       EMACS_BASE="/usr/local"
       export EMACS_BASE
   fi
-#+end_src sh
+#+end_src
 
 *** Coloring for standard commands
 GREP_COLOR is deprecated. =TODO= Define =GREP_COLORS=

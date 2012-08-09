@@ -818,7 +818,10 @@ The git stuff has to be replaced by the builtin vcs stuff of zsh.
   }
   
   [[ -o kshautoload ]] || gitaliasinit "$@"
-#+end_src
+#+end_#+BEGIN_SRC 
+
+#+END_SRC
+
 *** Add
 #+begin_src sh :tangle ~/.zsh.d/functions/git/add
   git add "${argv[@]}"

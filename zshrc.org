@@ -526,6 +526,8 @@ Defining this alias prevents the =nautilus= started by
   bindkey "^[[6~" down-line-or-history
   bindkey '^[[A' up-line-or-search
   bindkey '^[[B' down-line-or-search
+  bindkey '^P' up-line-or-search
+  bindkey '^N' down-line-or-search
    #+end_src
 
 *** Substring search

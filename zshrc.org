@@ -165,6 +165,12 @@ Defining this alias prevents the =nautilus= started by
   alias ssht='fixtmuxenv && ssh'
 #+end_src 
 
+
+*** Google Chrome switches
+#+begin_src sh 
+  alias google-chrome='google-chrome --purge-memory-button --enable-internal-flash'
+#+end_src 
+
 ** Functions
 :PROPERTIES:
 :noweb-ref: functions

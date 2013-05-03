@@ -68,7 +68,7 @@ On different systems emacs 24 will be installed in different
 locations; I set =EMACS_BASE= here; aliases etc. later will use it.
 #+begin_src sh
   if [ -z "${EMACS_BASE}" ]; then
-      EMACS_BASE="/usr/local"
+      EMACS_BASE="/usr"
       export EMACS_BASE
   fi
 #+end_src

@@ -167,9 +167,9 @@ Defining this alias prevents the =nautilus= started by
 
 
 *** Google Chrome switches
-#+begin_src sh 
+#+BEGIN_SRC sh 
   alias google-chrome='google-chrome --purge-memory-button --enable-internal-flash'
-#+end_src 
+#+END_SRC 
 
 ** Functions
 :PROPERTIES:
@@ -776,8 +776,8 @@ functions I ripped from it...
 *** Tomte
 At the moment this is based on the omz theme sorin.
 The git stuff has to be replaced by the builtin vcs stuff of zsh.
-#+BEGIN_SRC sh :tangle ~/.zsh.d/functions/prompt_tomte_setup
 <<prompt_tomte>>
+#+BEGIN_SRC sh :tangle ~/.zsh.d/functions/prompt_tomte_setup
   function prompt_tomte_setup {
       if [[ "$TERM" != "dumb" ]] && [[ "$DISABLE_LS_COLORS" != "true" ]]; then
           MODE_INDICATOR="%{$fg_bold[red]%}❮%{$reset_color%}%{$fg[red]%}❮❮%{$reset_color%}"

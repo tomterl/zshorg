@@ -768,6 +768,8 @@ functions I ripped from it...
   autoload -Uz gitaliasinit; gitaliasinit
 #+END_SRC
 
+
+
 * Library
 :PROPERTIES:
 :mkdirp: yes
@@ -835,10 +837,21 @@ The git stuff has to be replaced by the builtin vcs stuff of zsh.
 #+BEGIN_SRC sh :tangle ~/.zsh.d/functions/git/gstat
   git status "${argv[@]}"
 #+END_SRC
-*** Pull
+*** TODO Pull
+The normal git pull 
 #+BEGIN_SRC sh :tangle ~/.zsh.d/functions/git/pull
   git pull "${argv[@]}"
 #+END_SRC
+
+Update a local branch from updated master
+#+BEGIN_SRC sh :tangle ~/.zsh.d/functions/git/update_local
+checkout master && pull && checkout local && git merge master
+#+END_SRC
+Update org-mode from maint, not master
+#+BEGIN_SRC sh :tangle ~/.zsh.d/functions/git/update_org
+checkout maint && pull && checkout local && git merge maint
+#+END_SRC
+
 *** Push
 #+BEGIN_SRC sh :tangle ~/.zsh.d/functions/git/push
   git push "${argv[@]}"

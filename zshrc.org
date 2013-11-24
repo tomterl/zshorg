@@ -72,6 +72,11 @@ locations; I set =EMACS_BASE= here; aliases etc. later will use it.
       export EMACS_BASE
   fi
 #+END_SRC
+**** Emacs cask
+#+BEGIN_SRC sh
+  # emacs cask package/dev managment
+  export PATH="$HOME/.cask/bin:$PATH"
+#+END_SRC
 
 *** Coloring for standard commands
 GREP_COLOR is deprecated. =TODO= Define =GREP_COLORS=
@@ -110,6 +115,12 @@ into files autoloadable
 #+BEGIN_SRC sh 
   fpath=( ~/.zsh.d/functions $fpath )
 #+END_SRC 
+**** Ruby
+***** =rvm=
+#+BEGIN_SRC sh
+  # Add RVM to PATH for scripting
+  PATH=$PATH:$HOME/.rvm/bin
+#+END_SRC
 
 *** Bashlibs
 #+BEGIN_SRC sh  
@@ -768,8 +779,11 @@ functions I ripped from it...
   autoload -Uz gitaliasinit; gitaliasinit
 #+END_SRC
 
-
-
+* =zlogin=
+#+BEGIN_SRC sh :tangle ~/.zlogin
+  # Load RVM into a shell session *as a function
+  [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+#+END_SRC
 * Library
 :PROPERTIES:
 :mkdirp: yes

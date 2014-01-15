@@ -271,8 +271,17 @@ Defining this alias prevents the =nautilus= started by
       chmod 600 $HOME/bin/fixtmuxenv
   }
 #+END_SRC
-
-
+*** SSH host keys
+#+BEGIN_SRC sh
+  function remove_host_keys() {
+      host="${1}"
+      if [ -n "${host}" ]; then
+          ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${host}"
+      else
+          echo "remove_host_keys {IP|HOST}" > /dev/stderr
+      fi
+  }
+#+END_SRC
 ** Options
 :PROPERTIES:
 :noweb-ref: options

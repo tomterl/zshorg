@@ -1,6 +1,6 @@
 FILES:="\"zshrc.org\""
 DIR:=$(shell pwd)
-ORGINSTALL:=${HOME}/.emacs.d/elpa/org-current/
+ORGINSTALL:=${HOME}/.emacs.src.d/org-mode/lisp/
 ADDONS:=${HOME}/.zsh.d/addons
 EXTERNALS:=zsh-history-substring-search zsh-syntax-highlighting
 SHELL:=zsh
@@ -8,7 +8,7 @@ SHELL:=zsh
 tangle:
 	@emacs -Q --batch -L ${ORGINSTALL} \
 		--eval "(progn \
-			(require 'org) (require 'org-exp) (require 'ob) (require 'ob-tangle) \
+			(require 'org) (require 'ob) (require 'ob-tangle) \
 			 (mapc (lambda (file) (find-file (expand-file-name file \"$(DIR)\")) (org-babel-tangle) (kill-buffer)) '($(FILES))))" 
 
 externals: 

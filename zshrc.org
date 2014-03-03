@@ -171,13 +171,6 @@ Defining this alias prevents the =nautilus= started by
   alias nautilus='nautilus --no-desktop'  
 #+END_SRC
 
-
-
-*** Google Chrome switches
-#+BEGIN_SRC sh 
-  alias google-chrome='google-chrome --purge-memory-button --enable-internal-flash'
-#+END_SRC 
-
 ** Functions
 :PROPERTIES:
 :noweb-ref: functions

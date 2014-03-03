@@ -55,6 +55,7 @@
   <<terminal>>
   <<prompt>>
   <<git>>
+  <<packages>>
 #+END_SRC 
 
 ** Variables
@@ -788,6 +789,9 @@ functions I ripped from it...
   autoload -Uz gitaliasinit; gitaliasinit
 #+END_SRC
 ** Build packages
+:PROPERTIES:
+:noweb-ref: packages
+:END:
 #+BEGIN_SRC sh
   autoload -Uz stumpdeb
 #+END_SRC

@@ -79,9 +79,9 @@ locations; I set =EMACS_BASE= here; aliases etc. later will use it.
 #+END_SRC
 
 *** Coloring for standard commands
-GREP_COLOR is deprecated. =TODO= Define =GREP_COLORS=
+Use =green= for matches, not =red=.
 #+BEGIN_SRC sh 
-  export GREP_COLOR='1;32'
+  export GREP_COLORS="mt=01;32:ms=01;32:mc=01;32:sl=:cx=:fn=35:ln=32:bn=32:se=36"
 #+END_SRC
 
 *** Pager

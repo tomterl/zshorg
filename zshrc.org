@@ -860,12 +860,15 @@ checkout maint && pull && checkout local && git merge maint
 ** Installation/Packaging
 *** =stumpwm=
 #+BEGIN_SRC sh :tangle ~/.zsh.d/functions/stumpdeb
+  pushd ~/Projekte/stumpwm-contrib/
+  git pull
+  popd
   pushd ~/Projekte/stumpwm
   mkdir -p usr/local/bin
   mkdir -p usr/local/share/stumpwm/lisp
   mkdir -p usr/local/share/info
   cp stumpwm usr/local/bin
-  cp contrib/*.lisp usr/local/share/stumpwm/lisp
+  find ~/Projekte/stumpwm-contrib -maxdepth 1 -mindepth 1 -name '[a-z]*' -type d -print0 | xargs -0 -ILISP cp -a LISP usr/local/share/stumpwm/lisp/
   cp stumpwm.info usr/local/share/info/
   gzip usr/local/share/info/stumpwm.info
   fpm -t deb -s dir -n stumpwm -v $(date +"%Y%m%d") -d sbcl usr/

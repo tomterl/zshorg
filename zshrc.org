@@ -677,6 +677,11 @@ Use my [[prompt_tomte][prompt definition]].
   prompt tomte
 #+END_SRC
 
+** GNU global
+#+BEGIN_SRC sh
+  export GTAGSCONF=/usr/local/share/gtags/gtags.conf
+  export GTAGSLABEL=pygments
+#+END_SRC
 ** Git
 :PROPERTIES:
 :noweb-ref: git

@@ -55,6 +55,7 @@
   <<hooks>>
   <<terminal>>
   <<prompt>>
+  <<groovy>>
   <<git>>
   <<packages>>
 #+END_SRC 
@@ -685,6 +686,14 @@ Use my [[prompt_tomte][prompt definition]].
 #+BEGIN_SRC sh
   export GTAGSCONF=/usr/local/share/gtags/gtags.conf
   export GTAGSLABEL=pygments
+#+END_SRC
+
+** Groovy
+:PROPERTIES:
+:noweb-ref: groovy
+:END:
+#+BEGIN_SRC sh
+source ~/.gvm/bin/gvm-init.sh
 #+END_SRC
 ** Git
 :PROPERTIES:

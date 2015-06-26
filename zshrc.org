@@ -46,6 +46,7 @@
   <<aliases>>
   <<functions>>
   <<options>>
+  <<gnuglobal>>
   <<keybindings>>
   <<command_completion>>
   <<commandline_editing>>
@@ -678,6 +679,9 @@ Use my [[prompt_tomte][prompt definition]].
 #+END_SRC
 
 ** GNU global
+:PROPERTIES:
+:noweb-ref: gnuglobal
+:END:
 #+BEGIN_SRC sh
   export GTAGSCONF=/usr/local/share/gtags/gtags.conf
   export GTAGSLABEL=pygments

@@ -248,6 +248,13 @@ Defining this alias prevents the =nautilus= started by
       fi
   }
 #+END_SRC
+*** ~phpunit~
+#+BEGIN_SRC sh
+  function phpunit() {
+      command phpunit ${@}
+      echo -ne '\x1b[0m'
+  }
+#+END_SRC
 ** Options
 :PROPERTIES:
 :noweb-ref: options

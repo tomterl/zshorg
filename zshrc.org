@@ -172,7 +172,10 @@ Defining this alias prevents the =nautilus= started by
 #+BEGIN_SRC sh 
   alias nautilus='nautilus --no-desktop'  
 #+END_SRC
-
+*** vagrant ssh
+#+BEGIN_SRC sh
+  alias vssh='vagrant ssh -- -l tregner -i ~/.ssh/id_rsa'
+#+END_SRC
 ** Functions
 :PROPERTIES:
 :noweb-ref: functions

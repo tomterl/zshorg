@@ -255,7 +255,7 @@ Defining this alias prevents the =nautilus= started by
 #+BEGIN_SRC sh
   function phpunit() {
       command phpunit ${@}
-      echo -ne '\x1b[0m'
+      printf '\xb10m'
   }
 #+END_SRC
 ** Options

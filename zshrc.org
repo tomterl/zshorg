@@ -815,7 +815,16 @@ The git stuff has to be replaced by the builtin vcs stuff of zsh.
           
           PROMPT='%c${vcs_info_msg_0_} %(!.#.❯) '
           
-     fi      
+      fi
+      if [[ "$TERM" == "dumb" ]]
+      then
+          unsetopt zle
+          unsetopt prompt_cr
+          unsetopt prompt_subst
+          unfunction precmd
+          unfunction preexec
+          PS1='$ '
+      fi
   }
   
   prompt_tomte_setup "$@"  

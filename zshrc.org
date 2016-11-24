@@ -135,6 +135,10 @@ into files autoloadable
   export EDITOR="${EMACS_BASE}/bin/emacsclient -nw -c"
 #+END_SRC
 
+*** Java and XMonad
+#+BEGIN_SRC sh
+  export _JAVA_AWT_WM_NONREPARENTING=1
+#+END_SRC
 ** Modules
 :PROPERTIES:
 :noweb-ref: modules

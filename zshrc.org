@@ -60,14 +60,16 @@
 
 ** Variables
 :PROPERTIES:
-:noweb-ref: variables
-:padline: yes
+:header-args: :noweb-ref variables
+:header-args: :padline yes
 :END:
 
 *** Emacs setup
+
 On different systems emacs 24 will be installed in different
 locations; I set =EMACS_BASE= here; aliases etc. later will use it.
-#+BEGIN_SRC sh
+
+#+BEGIN_SRC sh 
   if [ -z "${EMACS_BASE}" ]; then
       EMACS_BASE="/usr"
       export EMACS_BASE
@@ -135,7 +137,7 @@ into files autoloadable
 
 ** Modules
 :PROPERTIES:
-:noweb-ref: modules
+:header-args: :noweb-ref modules
 :END:
 
 *** =colors=
@@ -145,7 +147,7 @@ into files autoloadable
 
 ** Aliases
 :PROPERTIES:
-:noweb-ref: aliases
+:header-args: :noweb-ref aliases
 :END:
 *** Coloring for standard commands
 A few standard aliases to deal with colored output in terminals.
@@ -173,7 +175,7 @@ Defining this alias prevents the =nautilus= started by
 
 ** Functions
 :PROPERTIES:
-:noweb-ref: functions
+:header-args: :noweb-ref functions
 :END:
 *** Archives
 **** Extract
@@ -248,7 +250,7 @@ Defining this alias prevents the =nautilus= started by
 #+END_SRC
 ** Options
 :PROPERTIES:
-:noweb-ref: options
+:header-args: :noweb-ref options
 :END:
 #+BEGIN_SRC sh 
   setopt extended_glob \
@@ -262,7 +264,7 @@ Defining this alias prevents the =nautilus= started by
 
 ** Keybindings
 :PROPERTIES:
-:noweb-ref: keybindings
+:header-args: :noweb-ref keybindings
 :END:
 *** Emacs style keybindings!
 #+BEGIN_SRC sh  
@@ -270,7 +272,7 @@ Defining this alias prevents the =nautilus= started by
 #+END_SRC
 ** Command completion
 :PROPERTIES:
-:noweb-ref: command_completion
+:header-args: :noweb-ref command_completion
 :END:
 *** =compinit=
 #+BEGIN_SRC sh  
@@ -365,7 +367,7 @@ Defining this alias prevents the =nautilus= started by
 
 ** Commandline editing
 :PROPERTIES:
-:noweb-ref: commandline_editing
+:header-args: :noweb-ref commandline_editing
 :END:
 *** Jump to beginning/end of line/word
 #+BEGIN_SRC sh 
@@ -465,7 +467,7 @@ Defining this alias prevents the =nautilus= started by
 
 ** History
 :PROPERTIES:
-:noweb-ref: history
+:header-args: :noweb-ref history
 :END:
 *** Variables
    #+BEGIN_SRC sh 
@@ -546,7 +548,7 @@ which I don't want correction.
 
 ** Directory traversal and manipulation
 :PROPERTIES:
-:noweb-ref: dired
+:header-args: :noweb-ref dired
 :END:
 *** Options
 #+BEGIN_SRC sh  
@@ -591,7 +593,7 @@ which I don't want correction.
 
 ** Hooks
 :PROPERTIES:
-:noweb-ref: hooks
+:header-args: :noweb-ref hooks
 :END:
 I use hooks in my prompt setup
 #+BEGIN_SRC sh  
@@ -600,7 +602,7 @@ I use hooks in my prompt setup
 
 ** Terminal
 :PROPERTIES:
-:noweb-ref: terminal
+:header-args: :noweb-ref terminal
 :END:
 *** Colors
 #+BEGIN_SRC sh  
@@ -708,7 +710,7 @@ Use my [[prompt_tomte][prompt definition]].
 #+END_SRC
 ** Git
 :PROPERTIES:
-:noweb-ref: git
+:header-args: :noweb-ref git
 :END:
 *** Prompt 
 If there is on thing I had to name, that made me crave for oh-my-zsh
@@ -782,7 +784,7 @@ functions I ripped from it...
 #+END_SRC
 ** Build packages
 :PROPERTIES:
-:noweb-ref: packages
+:header-args: :noweb-ref packages
 :END:
 #+BEGIN_SRC sh
   autoload -Uz stumpdeb

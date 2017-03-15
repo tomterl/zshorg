@@ -46,6 +46,7 @@
   <<aliases>>
   <<functions>>
   <<options>>
+  <<gnuglobal>>
   <<keybindings>>
   <<command_completion>>
   <<commandline_editing>>
@@ -54,6 +55,7 @@
   <<hooks>>
   <<terminal>>
   <<prompt>>
+  <<groovy>>
   <<git>>
   <<packages>>
 #+END_SRC 
@@ -135,6 +137,14 @@ into files autoloadable
   export EDITOR="${EMACS_BASE}/bin/emacsclient -nw -c"
 #+END_SRC
 
+*** Java and XMonad
+#+BEGIN_SRC sh
+  export _JAVA_AWT_WM_NONREPARENTING=1
+#+END_SRC
+*** Vagrant
+#+BEGIN_SRC sh
+  export WEBDEV_ROOT="~/Projekte/webdev-16.04/"
+#+END_SRC
 ** Modules
 :PROPERTIES:
 :header-args: :noweb-ref modules
@@ -172,7 +182,10 @@ Defining this alias prevents the =nautilus= started by
 #+BEGIN_SRC sh 
   alias nautilus='nautilus --no-desktop'  
 #+END_SRC
-
+*** vagrant ssh
+#+BEGIN_SRC sh
+  alias vssh="cd ${WEBDEV_ROOT} && vagrant ssh -- -l tregner -i ~/.ssh/id_rsa"
+#+END_SRC
 ** Functions
 :PROPERTIES:
 :header-args: :noweb-ref functions
@@ -246,6 +259,13 @@ Defining this alias prevents the =nautilus= started by
       else
           echo "remove_host_keys {IP|HOST}" > /dev/stderr
       fi
+  }
+#+END_SRC
+*** ~phpunit~
+#+BEGIN_SRC sh
+  function phpunit() {
+      command phpunit ${@}
+      printf '\xb10m'
   }
 #+END_SRC
 ** Options
@@ -704,9 +724,20 @@ Use my [[prompt_tomte][prompt definition]].
 #+END_SRC
 
 ** GNU global
+:PROPERTIES:
+:noweb-ref: gnuglobal
+:END:
 #+BEGIN_SRC sh
   export GTAGSCONF=/usr/local/share/gtags/gtags.conf
   export GTAGSLABEL=pygments
+#+END_SRC
+
+** Groovy
+:PROPERTIES:
+:noweb-ref: groovy
+:END:
+#+BEGIN_SRC sh
+source ~/.gvm/bin/gvm-init.sh
 #+END_SRC
 ** Git
 :PROPERTIES:
@@ -818,7 +849,16 @@ The git stuff has to be replaced by the builtin vcs stuff of zsh.
           
           PROMPT='%c${vcs_info_msg_0_} %(!.#.❯) '
           
-     fi      
+      fi
+      if [[ "$TERM" == "dumb" ]]
+      then
+          unsetopt zle
+          unsetopt prompt_cr
+          unsetopt prompt_subst
+          unfunction precmd
+          unfunction preexec
+          PS1='$ '
+      fi
   }
   
   prompt_tomte_setup "$@"  

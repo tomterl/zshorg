@@ -649,9 +649,33 @@ tags to commands like =date= with prompt =%= tags.
   
 #+END_SRC
 
+*** ~tmux~
+tmux wrapper that adds new commands to update environment variables in running panes/windows
+#+BEGIN_SRC sh
+function tmux() {
+    case "$1" in
+        update-environment|update-env|env-update)
+            local v
+            command tmux show-environment | while read v; do
+                if [[ "$v" == -* ]]; then
+                    unset ${v/#-/}
+                else
+                    # Add quotes around the argument
+                    v=${v/=/\=\"}
+                    v=${v/%/\"}
+                    eval export $v
+                fi
+            done 
+            ;;
+        *)
+            command tmux "$@"
+            ;;
+    esac
+}
+#+END_SRC
 ** Prompt
 :PROPERTIES:
-:noweb-ref: prompt
+:header-args: :noweb-ref prompt
 :END:
 *** Module
 #+BEGIN_SRC sh 

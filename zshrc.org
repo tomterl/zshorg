@@ -186,6 +186,10 @@ Defining this alias prevents the =nautilus= started by
 #+BEGIN_SRC sh
   alias vssh="cd ${WEBDEV_ROOT} && vagrant ssh -- -l tregner -i ~/.ssh/id_rsa"
 #+END_SRC
+*** tmux update-env 
+#+BEGIN_SRC sh
+  alias tue="tmux update-environment"
+#+END_SRC
 ** Functions
 :PROPERTIES:
 :header-args: :noweb-ref functions

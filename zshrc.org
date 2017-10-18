@@ -145,6 +145,11 @@ into files autoloadable
 #+BEGIN_SRC sh
   export WEBDEV_ROOT="~/Projekte/webdev-16.04/"
 #+END_SRC
+*** Arduino / Kaleidoscope
+#+BEGIN_SRC sh
+  export ARDUINO_PATH=/usr/share/arduino
+  export SKETCHBOOK_DIR=${HOME}/Arduino
+#+END_SRC
 ** Modules
 :PROPERTIES:
 :header-args: :noweb-ref modules

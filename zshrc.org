@@ -277,6 +277,14 @@ Defining this alias prevents the =nautilus= started by
       printf '\xb10m'
   }
 #+END_SRC
+*** Compress jpeg-Files via ~convert~
+#+BEGIN_SRC sh
+  function compress_jpeg() {
+      for pic in "${@}"; do 
+          convert -strip -interlace Plane -gaussian-blur 0.05 -quality 85% "${pic}" "${pic}"
+      done
+  }
+#+END_SRC
 ** Options
 :PROPERTIES:
 :header-args: :noweb-ref options

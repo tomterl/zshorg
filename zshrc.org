@@ -150,6 +150,10 @@ into files autoloadable
   export ARDUINO_PATH=/usr/share/arduino
   export SKETCHBOOK_DIR=${HOME}/Arduino
 #+END_SRC
+*** Desktop Keyring variables
+#+BEGIN_SRC sh
+export $( dex /etc/xdg/autostart/gnome-keyring-ssh.desktop )
+#+END_SRC
 ** Modules
 :PROPERTIES:
 :header-args: :noweb-ref modules
@@ -167,7 +171,7 @@ into files autoloadable
 *** Coloring for standard commands
 A few standard aliases to deal with colored output in terminals.
 #+BEGIN_SRC sh  
-  alias ls='ls --color=auto'
+  alias ls='/opt/coreutils/bin/ls --color=auto'
   alias grep='grep --color=auto'
   alias less='less -R'
 #+END_SRC
@@ -841,6 +845,9 @@ functions I ripped from it...
 #+BEGIN_SRC sh :tangle ~/.zlogin
   # Load RVM into a shell session *as a function
   [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+  if [ "$0" = "/usr/sbin/lightdm-session" -a "$DESKTOP_SESSION" = "i3" ]; then
+    export $(gnome-keyring-daemon -s)
+  fi
 #+END_SRC
 * Library
 :PROPERTIES:

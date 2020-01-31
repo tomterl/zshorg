@@ -428,6 +428,7 @@ Defining this alias prevents the =nautilus= started by
   bindkey "^[[3~" delete-char
   bindkey "^[3;5~" delete-char
   bindkey "\e[3~" delete-char
+  bindkey \^U backward-kill-line
 #+END_SRC 
 *** Insert the last shell word again
 #+BEGIN_SRC sh 

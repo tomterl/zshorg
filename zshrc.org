@@ -728,10 +728,6 @@ function tmux() {
 
 
 
-Use my [[prompt_tomte][prompt definition]].
-#+BEGIN_SRC sh
-  prompt tomte
-#+END_SRC
 
 ** GNU global
 :PROPERTIES:
@@ -845,6 +841,7 @@ functions I ripped from it...
 ** Plugins
 *** Write plugin list
 #+BEGIN_SRC sh :tangle ~/.zsh.d/plugins.txt
+bhilburn/hackersaurus
 zsh-users/zsh-completions
 zsh-users/zsh-autosuggestions
 zsh-users/zsh-history-substring-search
@@ -853,40 +850,6 @@ zsh-users/zsh-syntax-highlighting
 *** source the generated shell-file
 #+BEGIN_SRC sh :tangle ~/.zshrc
 [ -f ~/.zsh.d/plugins.sh ] && source ~/.zsh.d/plugins.sh
-#+END_SRC
-** Prompt
-*** Tomte
-At the moment this is based on the omz theme sorin.
-The git stuff has to be replaced by the builtin vcs stuff of zsh.
-<<prompt_tomte>>
-#+BEGIN_SRC sh :tangle ~/.zsh.d/functions/prompt_tomte_setup
-  function prompt_tomte_setup {
-      if [[ "$TERM" != "dumb" ]] && [[ "$DISABLE_LS_COLORS" != "true" ]]; then
-          MODE_INDICATOR="%{$fg_bold[red]%}❮%{$reset_color%}%{$fg[red]%}❮❮%{$reset_color%}"
-          local return_status="%{$fg[red]%}%(?..⏎)%{$reset_color%}"
-          
-          PROMPT='%{$fg[blue]%}%m%{$reset_color%}:%{$fg[cyan]%}%c${vcs_info_msg_0_} %(!.%{$fg_bold[red]%}#.%{$fg_bold[green]%}❯)%{$reset_color%} '
-          
-          
-      else 
-          MODE_INDICATOR="❮❮❮"
-          local return_status="%(?::⏎)"
-          
-          PROMPT='%c${vcs_info_msg_0_} %(!.#.❯) '
-          
-      fi
-      if [[ "$TERM" == "dumb" ]]
-      then
-          unsetopt zle
-          unsetopt prompt_cr
-          unsetopt prompt_subst
-          unfunction precmd
-          unfunction preexec
-          PS1='$ '
-      fi
-  }
-  
-  prompt_tomte_setup "$@"  
 #+END_SRC
 ** Git
 *** Init

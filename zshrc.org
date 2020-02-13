@@ -842,6 +842,7 @@ functions I ripped from it...
 *** Write plugin list
 #+BEGIN_SRC sh :tangle ~/.zsh.d/plugins.txt
 bhilburn/hackersaurus
+hlissner/zsh-autopair
 zsh-users/zsh-completions
 zsh-users/zsh-autosuggestions
 zsh-users/zsh-history-substring-search

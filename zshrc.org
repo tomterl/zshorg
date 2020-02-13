@@ -73,7 +73,7 @@ locations; I set =EMACS_BASE= here; aliases etc. later will use it.
 
 #+BEGIN_SRC sh 
   if [ -z "${EMACS_BASE}" ]; then
-      EMACS_BASE="/usr"
+      EMACS_BASE="/usr/local"
       export EMACS_BASE
   fi
 #+END_SRC
@@ -171,7 +171,7 @@ export $( dex /etc/xdg/autostart/gnome-keyring-ssh.desktop )
 *** Coloring for standard commands
 A few standard aliases to deal with colored output in terminals.
 #+BEGIN_SRC sh  
-  alias ls='/opt/coreutils/bin/ls --color=auto'
+  [ ! -L ~/bin/ls ] && alias ls='/opt/coreutils/bin/ls --color=auto'
   alias grep='grep --color=auto'
   alias less='less -R'
 #+END_SRC
@@ -447,12 +447,6 @@ Defining this alias prevents the =nautilus= started by
       rm_star_wait
 #+END_SRC
 
-*** Syntax highlighting
-#+BEGIN_SRC sh 
-  [[ -f ~/.zsh.d/addons/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
-      source ~/.zsh.d/addons/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-#+END_SRC 
-
 *** sudo
 #+BEGIN_SRC sh 
   run-with-sudo () { LBUFFER="sudo $LBUFFER" }
@@ -552,17 +546,11 @@ Defining this alias prevents the =nautilus= started by
   bindkey '^r' history-incremental-search-backward
   bindkey "^[[5~" up-line-or-history
   bindkey "^[[6~" down-line-or-history
-  bindkey '^[[A' up-line-or-search
-  bindkey '^[[B' down-line-or-search
+  bindkey 'OA' up-line-or-search
+  bindkey 'OB' down-line-or-search
   bindkey '^P' up-line-or-search
   bindkey '^N' down-line-or-search
    #+END_SRC
-
-*** Substring search
-#+BEGIN_SRC sh 
-  [[ -f ~/.zsh.d/addons/zsh-history-substring-search/zsh-history-substring-search.zsh ]] && \
-      source ~/.zsh.d/addons/zsh-history-substring-search/zsh-history-substring-search.zsh
-#+END_SRC 
 
 ** Jobcontrol
 *** Options
@@ -854,6 +842,18 @@ functions I ripped from it...
 :PROPERTIES:
 :mkdirp: yes
 :END:
+** Plugins
+*** Write plugin list
+#+BEGIN_SRC sh :tangle ~/.zsh.d/plugins.txt
+zsh-users/zsh-completions
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-history-substring-search
+zsh-users/zsh-syntax-highlighting
+#+END_SRC
+*** source the generated shell-file
+#+BEGIN_SRC sh :tangle ~/.zshrc
+[ -f ~/.zsh.d/plugins.sh ] && source ~/.zsh.d/plugins.sh
+#+END_SRC
 ** Prompt
 *** Tomte
 At the moment this is based on the omz theme sorin.

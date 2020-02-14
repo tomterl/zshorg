@@ -116,10 +116,18 @@ wrapper in my =~/bin=.
   path=( ~/bin $path )
 #+END_SRC
 Finaly adjust the =fpath=; a lot of the stuff following is tangled
-into files autoloadable
+into files autoloadable, and I use ~wd~ for easier filesystem navigation
 #+BEGIN_SRC sh 
+  fpath=( ~/bin/wd.zsh $fpath)
   fpath=( ~/.zsh.d/functions $fpath )
-#+END_SRC 
+#+END_SRC
+**** ~wd~ function
+#+BEGIN_SRC sh
+  wd() {
+      . ~/bin/wd.zsh/wd.sh
+  }
+#+END_SRC
+#
 **** Ruby
 ***** =rvm=
 #+BEGIN_SRC sh
@@ -726,7 +734,16 @@ function tmux() {
   setopt prompt_subst
 #+END_SRC 
 
+*** Configure theme
+Do not show the ~nodejs~ block, show our new shiny php block instead.
 
+#+BEGIN_SRC sh
+  function blox_block__php() {
+	  PHPV=$(php --version | head -n 1 | cut -d- -f1)
+	  echo "${BLOX_CONF__BLOCK_PREFIX}${PHPV}${BLOX_CONF__BLOCK_SUFFIX}"
+  }
+export BLOX_SEG__UPPER_RIGHT=( bgjobs php pyenv virtualenv time )
+#+END_SRC
 
 
 ** GNU global
@@ -841,7 +858,7 @@ functions I ripped from it...
 ** Plugins
 *** Write plugin list
 #+BEGIN_SRC sh :tangle ~/.zsh.d/plugins.txt
-specious/bender
+yardnsm/blox-zsh-theme
 hlissner/zsh-autopair
 zsh-users/zsh-completions
 zsh-users/zsh-autosuggestions

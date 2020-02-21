@@ -738,7 +738,8 @@ function tmux() {
 
 **** Load all the icons...
 #+BEGIN_SRC sh
-. ~/.local/share/icons-in-terminal/icons_bash.sh
+[ -f ~/.local/share/icons-in-terminal/icons_bash.sh ] && \
+	. ~/.local/share/icons-in-terminal/icons_bash.sh
 #+END_SRC
 
 **** ~php~ block
@@ -746,7 +747,7 @@ function tmux() {
 Do not show the ~nodejs~ block, show our new shiny php block instead.
 
 #+BEGIN_SRC sh
-  BLOX_BLOCK__PHP_SYMBOL="${BLOX_BLOCK__PHP_SYMBOL:-${file_php} }"
+  BLOX_BLOCK__PHP_SYMBOL="${BLOX_BLOCK__PHP_SYMBOL:-${file_php:-php} }"
   BLOX_BLOCK__PHP_COLOR="${BLOX_BLOCK__PHP_COLOR:-green}"
   function blox_block__php() {
 	  PHPV=$(php --version | head -n 1 | cut -d- -f1 | sed 's/PHP //')

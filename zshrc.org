@@ -749,8 +749,11 @@ function tmux() {
 
 **** Load all the icons...
 #+BEGIN_SRC sh
-[ -f ~/.local/share/icons-in-terminal/icons_bash.sh ] && \
+if [ -f ~/.local/share/icons-in-terminal/icons_bash.sh ]; then
 	. ~/.local/share/icons-in-terminal/icons_bash.sh
+elif [ -f /usr/share/icons-in-terminal/icons_bash.sh ]; then
+	. /usr/share/icons-in-terminal/icons_bash.sh
+fi
 #+END_SRC
 
 **** ~php~ block

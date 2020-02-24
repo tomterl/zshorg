@@ -137,7 +137,7 @@ into files autoloadable
   export EDITOR="${EMACS_BASE}/bin/emacsclient -nw -c"
 #+END_SRC
 
-*** Java and XMonad
+*** Java and tiling WMs
 #+BEGIN_SRC sh
   export _JAVA_AWT_WM_NONREPARENTING=1
 #+END_SRC
@@ -287,6 +287,17 @@ Defining this alias prevents the =nautilus= started by
       for pic in "${@}"; do 
           convert -strip -interlace Plane -gaussian-blur 0.05 -quality 85% "${pic}" "${pic}"
       done
+  }
+#+END_SRC
+*** Check for null-bytes
+#+BEGIN_SRC sh
+  function check_zero_bytes() {
+      status=0
+      for arg in "${@}"; do
+          perl -ne '/\000/ and print' "${arg}"
+          status=1
+      done
+      return $status
   }
 #+END_SRC
 ** Options

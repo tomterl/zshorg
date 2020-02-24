@@ -73,7 +73,7 @@ locations; I set =EMACS_BASE= here; aliases etc. later will use it.
 
 #+BEGIN_SRC sh 
   if [ -z "${EMACS_BASE}" ]; then
-      EMACS_BASE="/usr"
+      EMACS_BASE="/usr/local"
       export EMACS_BASE
   fi
 #+END_SRC
@@ -116,10 +116,18 @@ wrapper in my =~/bin=.
   path=( ~/bin $path )
 #+END_SRC
 Finaly adjust the =fpath=; a lot of the stuff following is tangled
-into files autoloadable
+into files autoloadable, and I use ~wd~ for easier filesystem navigation
 #+BEGIN_SRC sh 
+  fpath=( ~/bin/wd.zsh $fpath)
   fpath=( ~/.zsh.d/functions $fpath )
-#+END_SRC 
+#+END_SRC
+**** ~wd~ function
+#+BEGIN_SRC sh
+  wd() {
+      . ~/bin/wd.zsh/wd.sh
+  }
+#+END_SRC
+#
 **** Ruby
 ***** =rvm=
 #+BEGIN_SRC sh
@@ -143,7 +151,7 @@ into files autoloadable
 #+END_SRC
 *** Vagrant
 #+BEGIN_SRC sh
-  export WEBDEV_ROOT="~/Projekte/webdev-16.04/"
+  export WEBDEV_ROOT="~/Projekte/webdev-1804/"
 #+END_SRC
 *** Arduino / Kaleidoscope
 #+BEGIN_SRC sh
@@ -171,7 +179,7 @@ export $( dex /etc/xdg/autostart/gnome-keyring-ssh.desktop )
 *** Coloring for standard commands
 A few standard aliases to deal with colored output in terminals.
 #+BEGIN_SRC sh  
-  alias ls='/opt/coreutils/bin/ls --color=auto'
+  [ ! -L ~/bin/ls ] && alias ls='/opt/coreutils/bin/ls --color=auto'
   alias grep='grep --color=auto'
   alias less='less -R'
 #+END_SRC
@@ -439,6 +447,7 @@ Defining this alias prevents the =nautilus= started by
   bindkey "^[[3~" delete-char
   bindkey "^[3;5~" delete-char
   bindkey "\e[3~" delete-char
+  bindkey \^U backward-kill-line
 #+END_SRC 
 *** Insert the last shell word again
 #+BEGIN_SRC sh 
@@ -456,12 +465,6 @@ Defining this alias prevents the =nautilus= started by
   setopt no_beep \
       rm_star_wait
 #+END_SRC
-
-*** Syntax highlighting
-#+BEGIN_SRC sh 
-  [[ -f ~/.zsh.d/addons/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
-      source ~/.zsh.d/addons/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-#+END_SRC 
 
 *** sudo
 #+BEGIN_SRC sh 
@@ -562,17 +565,11 @@ Defining this alias prevents the =nautilus= started by
   bindkey '^r' history-incremental-search-backward
   bindkey "^[[5~" up-line-or-history
   bindkey "^[[6~" down-line-or-history
-  bindkey '^[[A' up-line-or-search
-  bindkey '^[[B' down-line-or-search
+  bindkey 'OA' up-line-or-search
+  bindkey 'OB' down-line-or-search
   bindkey '^P' up-line-or-search
   bindkey '^N' down-line-or-search
    #+END_SRC
-
-*** Substring search
-#+BEGIN_SRC sh 
-  [[ -f ~/.zsh.d/addons/zsh-history-substring-search/zsh-history-substring-search.zsh ]] && \
-      source ~/.zsh.d/addons/zsh-history-substring-search/zsh-history-substring-search.zsh
-#+END_SRC 
 
 ** Jobcontrol
 *** Options
@@ -748,12 +745,30 @@ function tmux() {
   setopt prompt_subst
 #+END_SRC 
 
+*** Configure theme
 
-
-Use my [[prompt_tomte][prompt definition]].
+**** Load all the icons...
 #+BEGIN_SRC sh
-  prompt tomte
+[ -f ~/.local/share/icons-in-terminal/icons_bash.sh ] && \
+	. ~/.local/share/icons-in-terminal/icons_bash.sh
 #+END_SRC
+
+**** ~php~ block
+
+Do not show the ~nodejs~ block, show our new shiny php block instead.
+
+#+BEGIN_SRC sh
+  BLOX_BLOCK__PHP_SYMBOL="${BLOX_BLOCK__PHP_SYMBOL:-${file_php:-php} }"
+  BLOX_BLOCK__PHP_COLOR="${BLOX_BLOCK__PHP_COLOR:-green}"
+  function blox_block__php() {
+	  PHPV=$(php --version | head -n 1 | cut -d- -f1 | sed 's/PHP //')
+	  blox_helper__build_block \
+		  "${BLOX_BLOCK__PHP_COLOR}" \
+		  "${BLOX_BLOCK__PHP_SYMBOL}${PHPV}"
+  }
+export BLOX_SEG__UPPER_RIGHT=( bgjobs php pyenv virtualenv time )
+#+END_SRC
+
 
 ** GNU global
 :PROPERTIES:
@@ -864,39 +879,19 @@ functions I ripped from it...
 :PROPERTIES:
 :mkdirp: yes
 :END:
-** Prompt
-*** Tomte
-At the moment this is based on the omz theme sorin.
-The git stuff has to be replaced by the builtin vcs stuff of zsh.
-<<prompt_tomte>>
-#+BEGIN_SRC sh :tangle ~/.zsh.d/functions/prompt_tomte_setup
-  function prompt_tomte_setup {
-      if [[ "$TERM" != "dumb" ]] && [[ "$DISABLE_LS_COLORS" != "true" ]]; then
-          MODE_INDICATOR="%{$fg_bold[red]%}❮%{$reset_color%}%{$fg[red]%}❮❮%{$reset_color%}"
-          local return_status="%{$fg[red]%}%(?..⏎)%{$reset_color%}"
-          
-          PROMPT='%{$fg[blue]%}%m%{$reset_color%}:%{$fg[cyan]%}%c${vcs_info_msg_0_} %(!.%{$fg_bold[red]%}#.%{$fg_bold[green]%}❯)%{$reset_color%} '
-          
-          
-      else 
-          MODE_INDICATOR="❮❮❮"
-          local return_status="%(?::⏎)"
-          
-          PROMPT='%c${vcs_info_msg_0_} %(!.#.❯) '
-          
-      fi
-      if [[ "$TERM" == "dumb" ]]
-      then
-          unsetopt zle
-          unsetopt prompt_cr
-          unsetopt prompt_subst
-          unfunction precmd
-          unfunction preexec
-          PS1='$ '
-      fi
-  }
-  
-  prompt_tomte_setup "$@"  
+** Plugins
+*** Write plugin list
+#+BEGIN_SRC sh :tangle ~/.zsh.d/plugins.txt
+yardnsm/blox-zsh-theme
+hlissner/zsh-autopair
+zsh-users/zsh-completions
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-history-substring-search
+zsh-users/zsh-syntax-highlighting
+#+END_SRC
+*** source the generated shell-file
+#+BEGIN_SRC sh :tangle ~/.zshrc
+[ -f ~/.zsh.d/plugins.sh ] && source ~/.zsh.d/plugins.sh
 #+END_SRC
 ** Git
 *** Init

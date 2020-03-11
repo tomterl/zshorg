@@ -764,10 +764,12 @@ Do not show the ~nodejs~ block, show our new shiny php block instead.
   BLOX_BLOCK__PHP_SYMBOL="${BLOX_BLOCK__PHP_SYMBOL:-${file_php:-php} }"
   BLOX_BLOCK__PHP_COLOR="${BLOX_BLOCK__PHP_COLOR:-green}"
   function blox_block__php() {
-	  PHPV=$(php --version | head -n 1 | cut -d- -d\( -f1 | sed 's/PHP //')
-	  blox_helper__build_block \
-		  "${BLOX_BLOCK__PHP_COLOR}" \
-		  "${BLOX_BLOCK__PHP_SYMBOL}${PHPV}"
+	  if [ -n "$(find_root $PWD RoboFile.php)" ]; then
+		  PHPV=$(php --version | head -n 1 | cut -d- -f1 | sed 's/PHP //')
+		  blox_helper__build_block \
+			  "${BLOX_BLOCK__PHP_COLOR}" \
+			  "${BLOX_BLOCK__PHP_SYMBOL}${PHPV}"
+	  fi
   }
 export BLOX_SEG__UPPER_RIGHT=( bgjobs php pyenv virtualenv time )
 #+END_SRC
@@ -862,6 +864,7 @@ functions I ripped from it...
 *** Commands
 #+BEGIN_SRC sh  
   autoload -Uz gitaliasinit; gitaliasinit
+  autoload -Uz find_root
 #+END_SRC
 ** Build packages
 :PROPERTIES:
@@ -978,3 +981,39 @@ checkout maint && pull && checkout local && git merge maint
   fpm -t deb -s dir -n stumpwm -v $(date +"%Y%m%d") -d sbcl usr/
   popd
 #+END_SRC 
+
+** Project tools
+*** find project root
+#+BEGIN_SRC sh :tangle ~/.zsh.d/functions/find_root
+local look_from=${1:-$PWD}
+local look_for=${2:-}
+local look_until=${${3:-/}:A}
+
+# Manually look in parent dirs. An extended Zsh glob should use Y1 for
+#   # performance reasons, which is only available in zsh-5.0.5-146-g9381bb6.
+local last
+local parent_dir="$look_from/.."
+local abs_parent_dir
+while true; do
+	abs_parent_dir=${parent_dir:A}
+	if [[ $abs_parent_dir == $last ]]; then
+		break
+	fi
+	local parent_file="${parent_dir}/${look_for}"
+
+	if [[ -f $parent_file ]]; then
+		if [[ ${parent_file[1,2]} == './' ]]; then
+			echo ${parent_file#./}
+		else
+			echo ${parent_file:a}
+		fi
+		break
+	fi
+
+	if [[ $abs_parent_dir == $look_until ]]; then
+		break
+	fi
+	last=$abs_parent_dir
+	parent_dir="${parent_dir}/.."
+done
+#+END_SRC

@@ -764,7 +764,7 @@ Do not show the ~nodejs~ block, show our new shiny php block instead.
   BLOX_BLOCK__PHP_SYMBOL="${BLOX_BLOCK__PHP_SYMBOL:-${file_php:-php} }"
   BLOX_BLOCK__PHP_COLOR="${BLOX_BLOCK__PHP_COLOR:-green}"
   function blox_block__php() {
-	  if [ -n "$(find_root $PWD RoboFile.php)" ]; then
+	  if [ -n "$(find_root "$PWD" RoboFile.php)" ]; then
 		  PHPV=$(php --version | head -n 1 | cut -d- -f1 | sed 's/PHP //')
 		  blox_helper__build_block \
 			  "${BLOX_BLOCK__PHP_COLOR}" \
@@ -992,7 +992,7 @@ local look_until=${${3:-/}:A}
 # Manually look in parent dirs. An extended Zsh glob should use Y1 for
 #   # performance reasons, which is only available in zsh-5.0.5-146-g9381bb6.
 local last
-local parent_dir="$look_from/.."
+local parent_dir="$look_from"
 local abs_parent_dir
 while true; do
 	abs_parent_dir=${parent_dir:A}

@@ -201,7 +201,7 @@ Defining this alias prevents the =nautilus= started by
 #+END_SRC
 *** vagrant ssh
 #+BEGIN_SRC sh
-  alias vssh="pushd ${WEBDEV_ROOT} && docker exec -it devserver /bin/bash"
+  alias vssh="pushd ${WEBDEV_ROOT} && docker exec -it devserver /bin/bash; popd"
 #+END_SRC
 *** tmux update-env 
 #+BEGIN_SRC sh

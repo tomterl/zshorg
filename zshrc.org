@@ -207,6 +207,10 @@ Defining this alias prevents the =nautilus= started by
 #+BEGIN_SRC sh
   alias tue="tmux update-environment"
 #+END_SRC
+*** system log with lnav
+#+BEGIN_SRC sh
+  alias syslog="journalctl -f -o json | lnav"
+#+END_SRC
 ** Functions
 :PROPERTIES:
 :header-args: :noweb-ref functions

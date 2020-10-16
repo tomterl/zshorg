@@ -151,7 +151,7 @@ into files autoloadable, and I use ~wd~ for easier filesystem navigation
 #+END_SRC
 *** Vagrant
 #+BEGIN_SRC sh
-  export WEBDEV_ROOT="~/Projekte/webdev-1804/"
+  export WEBDEV_ROOT="~/Projekte/devserver/"
 #+END_SRC
 *** Arduino / Kaleidoscope
 #+BEGIN_SRC sh
@@ -201,7 +201,7 @@ Defining this alias prevents the =nautilus= started by
 #+END_SRC
 *** vagrant ssh
 #+BEGIN_SRC sh
-  alias vssh="pushd ${WEBDEV_ROOT} && vagrant ssh -- -l tregner -i ~/.ssh/id_rsa && popd"
+  alias vssh="pushd ${WEBDEV_ROOT} && docker exec -it devserver /bin/bash"
 #+END_SRC
 *** tmux update-env 
 #+BEGIN_SRC sh

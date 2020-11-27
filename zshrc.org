@@ -769,7 +769,7 @@ Do not show the ~nodejs~ block, show our new shiny php block instead.
   BLOX_BLOCK__PHP_COLOR="${BLOX_BLOCK__PHP_COLOR:-green}"
   function blox_block__php() {
 	  if [ -n "$(find_root "$PWD" RoboFile.php)" ]; then
-		  PHPV=$(php --version | head -n 1 | cut -d- -f1 | sed 's/PHP //')
+		  PHPV=$(php --version | head -n 1 | cut -d- -f1 | sed 's/PHP //' | cut -d\  -f1)
 		  blox_helper__build_block \
 			  "${BLOX_BLOCK__PHP_COLOR}" \
 			  "${BLOX_BLOCK__PHP_SYMBOL}${PHPV}"

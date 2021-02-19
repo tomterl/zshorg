@@ -1,3 +1,5 @@
+This repository moved to sourcehut: https://git.sr.ht/~tomterl/zshorg
+
 * My literate =zsh= configuration.
 
 This is my zsh configuration as [[http://orgmode.org/][org-mode]] document, based off of my
